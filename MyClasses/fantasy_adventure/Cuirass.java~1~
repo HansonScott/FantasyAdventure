@@ -1,0 +1,256 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+public class Cuirass extends Armor{
+
+//********************************************************
+// static declarations
+
+  static ItemBasics BASICS_ROBE;
+  static ItemBasics BASICS_LIGHT;
+  static ItemBasics BASICS_MEDIUM;
+  static ItemBasics BASICS_HEAVY;
+
+//********************************************************
+// instance declarations
+
+//********************************************************
+// contructor
+//********************************************************
+
+  public Cuirass (int type) {
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcCuirassStats();
+    updateDetails();
+  } // end constructor
+
+//********************************************************
+// public methods
+//******************************************************************************
+  void writeCuirassToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeItemToFile(bw);
+
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//******************************************************************************
+  static Cuirass readCuirassFromFile (int type, BufferedReader br) throws IOException{
+
+    Cuirass thisItem = new Cuirass(type);
+    thisItem.readItemFromFile(br);
+
+    // now we can read our details onto the line...
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//********************************************************
+// static methods
+//********************************************************
+  public static Item generateRandomLight() {
+    Cuirass thisItem = new Cuirass(Item.CUIRASS_LIGHT);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcCuirassStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomLight
+
+//********************************************************
+  public static Item generateRandomMedium() {
+    Cuirass thisItem = new Cuirass(Item.CUIRASS_MEDIUM);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcCuirassStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomMedium()
+
+//********************************************************
+  public static Item generateRandomHeavy() {
+    Cuirass thisItem = new Cuirass(Item.CUIRASS_HEAVY);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcCuirassStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomHeavy()
+
+//********************************************************
+  public static Item generateRandomRobe() {
+    Cuirass thisItem = new Cuirass(Item.CUIRASS_ROBE);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcCuirassStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomRobe()
+
+//********************************************************
+  public static Item generateRandomCuirass(){
+    switch(Roll.D4()){
+      case 1:  return generateRandomLight();
+      case 2:  return generateRandomMedium();
+      case 3:  return generateRandomHeavy();
+      case 4:  return generateRandomRobe();
+      default: return generateRandomLight();
+    } // end switch
+  } // end generateRandomCuirass()
+
+//********************************************************
+// private methods
+//********************************************************
+  private void calcCuirassStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+    if       (getType() == Item.CUIRASS_LIGHT){
+      setInventoryIcon(BASICS_LIGHT.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_LIGHT.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_LIGHT.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_LIGHT.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_LIGHT.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_LIGHT.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if light
+
+    else if (getType() == Item.CUIRASS_MEDIUM){
+      setInventoryIcon(BASICS_MEDIUM.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_MEDIUM.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_MEDIUM.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_MEDIUM.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_MEDIUM.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_MEDIUM.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if light
+
+    else if (getType() == Item.CUIRASS_HEAVY){
+      setInventoryIcon(BASICS_HEAVY.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_HEAVY.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_HEAVY.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_HEAVY.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_HEAVY.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_HEAVY.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if light
+
+    else if (getType() == Item.CUIRASS_ROBE){
+      setInventoryIcon(BASICS_ROBE.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_ROBE.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_ROBE.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_ROBE.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_ROBE.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_ROBE.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if light
+
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+  } // end calcCuirassStats
+
+//********************************************************
+} // end class
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

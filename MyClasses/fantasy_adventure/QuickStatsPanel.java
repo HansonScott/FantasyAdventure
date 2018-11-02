@@ -1,0 +1,56 @@
+package fantasy_adventure;
+
+import java.awt.*;
+import javax.swing.*;
+
+//**************************************************************
+public class QuickStatsPanel extends JPanelWithBackground{
+
+/* The purpose of this class is to handle the many operations that
+ * take place directly on the actionArea itself.  This will integrate
+ * many other classes and components, as they all affect and are affected
+ * by this class.
+ * For the most part, this will deal with the graphical side of displaying
+ * area and drawing all the objects/characters/effects within that area.
+ */
+//**************************************************************
+// static declarations
+//**************************************************************
+
+//**************************************************************
+// instance declarations
+//**************************************************************
+
+//**************************************************************
+// constructor
+//**************************************************************
+
+public QuickStatsPanel(){
+  // start with default super-constructor
+  super();
+
+  // now setup all the details.
+  setPreferredSize(new Dimension(ActionPanel.quickStatsPanelWidth,
+                                 ActionPanel.controlPanelHeight));
+  setBackground(Constants.YELLOW_LIGHT);
+
+} // end constructor
+
+//**************************************************************
+// static methods
+//**************************************************************
+
+//**************************************************************
+// public methods
+//**************************************************************
+
+//**************************************************************
+// package methods
+//**************************************************************
+
+//**************************************************************
+// private methods
+//**************************************************************
+
+//**************************************************************
+} // end class

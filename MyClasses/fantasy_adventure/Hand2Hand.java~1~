@@ -1,0 +1,237 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+public class Hand2Hand extends Weapon{
+
+//**********************************************************
+// static declarations
+
+  static ItemBasics BASICS_KNUCKLES;
+  static ItemBasics BASICS_FIST;
+  static ItemBasics BASICS_CLAWS;
+  static ItemBasics BASICS_DAGGER;
+
+//**********************************************************
+// member declarations
+
+//**********************************************************
+// constructor
+//**********************************************************
+
+  public Hand2Hand (int type){
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcHand2HandStats();
+    updateDetails();
+  } // end constructor
+
+//******************************************************************************
+// public methods
+//******************************************************************************
+  void writeHand2HandToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeItemToFile(bw);
+
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//******************************************************************************
+  static Hand2Hand readHand2HandFromFile (int type, BufferedReader br) throws IOException{
+
+    Hand2Hand thisItem = new Hand2Hand(type);
+    thisItem.readItemFromFile(br);
+
+    // now we can read our details onto the line...
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//**********************************************************
+// static methods
+//**********************************************************
+  public static Item generateRandomKnuckles() {
+    Hand2Hand thisItem = new Hand2Hand(Item.HAND2HAND_KNUCKLES);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcHand2HandStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomKnuckles
+
+//**********************************************************
+  public static Item generateRandomClaws() {
+    Hand2Hand thisItem = new Hand2Hand(Item.HAND2HAND_CLAWS);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcHand2HandStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomClaws
+
+//**********************************************************
+  public static Item generateRandomDagger() {
+    Hand2Hand thisItem = new Hand2Hand(Item.HAND2HAND_DAGGER);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcHand2HandStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomDagger
+
+//**********************************************************
+  public static Item generateRandomHand2Hand() {
+    switch(Roll.D3()){
+      case 1:  return generateRandomKnuckles();
+      case 2:  return generateRandomClaws();
+      case 3:  return generateRandomDagger();
+      default: return generateRandomClaws();
+    } // end switch
+  } // end generateRandomHand2Hand
+
+//**********************************************************
+// private methods
+//**********************************************************
+  private void calcHand2HandStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+    if (getType() == Item.HAND2HAND_KNUCKLES){
+      setInventoryIcon(BASICS_KNUCKLES.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_KNUCKLES.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_KNUCKLES.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_KNUCKLES.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_KNUCKLES.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_KNUCKLES.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end knuckles
+
+    else if (getType() == Item.HAND2HAND_CLAWS){
+      setInventoryIcon(BASICS_CLAWS.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_CLAWS.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_CLAWS.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_CLAWS.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_CLAWS.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_CLAWS.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end claws
+
+    else if (getType() == Item.HAND2HAND_DAGGER){
+      setInventoryIcon(BASICS_DAGGER.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_DAGGER.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_DAGGER.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_DAGGER.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_DAGGER.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_DAGGER.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end dagger
+
+
+    else if (getType() == Item.HAND2HAND_FIST){
+      setInventoryIcon(BASICS_FIST.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_FIST.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_FIST.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_FIST.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_FIST.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_FIST.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end FIST
+
+    else {} // all types accounted for
+
+    updateDmgFormula();
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+  } // end calcHand2HandStats
+
+//*****************************************************************
+} // end class

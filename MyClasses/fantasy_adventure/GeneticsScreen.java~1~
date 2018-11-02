@@ -1,0 +1,605 @@
+package fantasy_adventure;
+
+/* purpose: to create the genetics screen portion of the CGen process.
+ * A single screen controling the choice of gender, race, age, name, and portrait
+ * Eventually, it should read from files to get all possible races, portraits, names, etc.
+ */
+
+
+import java.io.*;
+import java.awt.*;       // supports basic GUI components
+import java.awt.event.*; // supports listeners
+import javax.swing.*;    // supports swing GUI components
+
+public class GeneticsScreen extends CGenScreen implements ActionListener,
+                                                          FocusListener {
+
+// initialize variables and objects
+
+// macro objects within the geneticsScreen CentralPanel
+  JPanel geneticsPanel;
+  JPanel portraitPanel;
+
+// internal objects within geneticsPanel
+  JLabel     genderLabel;
+  JComboBox  genderList;
+  String     genderChoice;
+  String     genderDescription = FileNames.CGEN_GENDER_DESC;
+  JLabel     raceLabel;
+  JComboBox  raceList;
+  String     raceChoice;
+  JLabel     ageLabel;
+  JTextField ageField;
+  String     ageChoice;
+  int        ageNumber;
+  int        avgLifespanValue;
+  JLabel     avgLifespanLabel;
+  JLabel     fullNameLabel;
+  JTextField fullNameField;
+  JLabel     shortNameLabel;
+  JTextField shortNameField;
+  String     fullNameChoice;
+  String     shortNameChoice;
+  JButton    suggestNameButton;
+  JTextArea  descriptionArea;
+  String     raceDescriptionMessage;
+  String     nameDescriptionMessage = FileNames.CGEN_NAME_DESC;
+  String     picPath;
+  String     picPathAndFileLarge;
+  String     picPathAndFileSmall;
+
+// internal objects within geneticsPanel
+  JPanel     row1;
+  JPanel     row2;
+  JPanel     row3;
+  JPanel     row4;
+  JPanel     row5;
+  JPanel     row6;
+
+// internal objects within portraitPanel
+  JLabel     portraitLabel;
+  JPanel     portraitChooserPanel;
+  JButton    lastPortrait;
+  JLabel     picturePanel;
+  ImageIcon  currentPic;
+  JButton    nextPortrait;
+  int        picFileNumber;
+
+  JColorChooser      colorChooser;
+  JDialog            dialog;
+  ColorChooserButton skinColorButton;
+  ColorChooserButton hairColorButton;
+  ColorChooserButton majorColorButton;
+  ColorChooserButton minorColorButton;
+
+  String skinColorDesc  = MyTextIO.readOneLineFromFile(FileNames.SKIN_COLOR_DESC);
+  String hairColorDesc  = MyTextIO.readOneLineFromFile(FileNames.HAIR_COLOR_DESC);
+  String majorColorDesc = MyTextIO.readOneLineFromFile(FileNames.MAJOR_COLOR_DESC);
+  String minorColorDesc = MyTextIO.readOneLineFromFile(FileNames.MINOR_COLOR_DESC);
+
+// internal objects within buttonPanel
+
+// ************************************************************
+// constructors
+// ************************************************************
+public GeneticsScreen(){
+
+  // create basic JPanel, with borderLayout
+  super();
+
+  // create and setup topTextArea objects
+  setIntroMessage (FileNames.CGEN_GENETICS_SCREEN_INTRO);
+
+  // create and setup centralPanel
+  centralPanel.setLayout(new GridLayout(1,0));
+  setBorder();
+
+  // create and setup geneticsPanel (left side of centralPanel)
+  geneticsPanel = new JPanel();
+  geneticsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 20));
+  geneticsPanel.setBorder(BorderFactory.createEtchedBorder());
+
+  // internal objects within geneticsPanel need to added by row.
+  raceLabel = new JLabel("Race:  ");
+  raceList = new JComboBox(getPlayableRaceNames());
+  raceList.setSelectedIndex(0);
+  raceChoice = (String)raceList.getSelectedItem();
+  raceList.addActionListener(this);
+//  Popup.createInfoPopup("Combo box created and set, raceChoice: " + raceChoice);
+
+    row1 = new JPanel();
+    row1.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
+    row1.add(raceLabel);
+    row1.add(raceList);
+
+  genderLabel = new JLabel("Gender:  ");
+  String[] genderArray = {"Male", "Female"};
+  genderList = new JComboBox(genderArray);
+  genderList.setSelectedIndex(0);
+  genderChoice = (String)genderList.getSelectedItem();
+  genderList.addActionListener(this);
+
+    row2 = new JPanel();
+    row2.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
+    row2.add(genderLabel);
+    row2.add(genderList);
+
+  ageLabel = new JLabel("Age:     ");
+  ageField = new JTextField();
+  ageField.setText("25");
+  ageChoice = String.valueOf(25);
+  ageField.setColumns(3);
+  ageField.addFocusListener(this);
+  avgLifespanValue = 75; // default to Human, since that is the default choice.
+  raceChoice = (String)raceList.getSelectedItem();
+  avgLifespanLabel = new JLabel("  The average " +  raceChoice +
+                                 " lifespan is: " + avgLifespanValue);
+    row3 = new JPanel();
+    row3.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
+    row3.add(ageLabel);
+    row3.add(ageField);
+    row3.add(avgLifespanLabel);
+
+  fullNameLabel = new JLabel("Full Name: ");
+  fullNameField = new JTextField();
+  fullNameField.setColumns(26);
+  fullNameField.setText("Unknown Hero");
+  fullNameChoice = "Unknown Hero";
+  fullNameField.addFocusListener(this);
+    row4 = new JPanel();
+    row4.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
+    row4.add(fullNameLabel);
+    row4.add(fullNameField);
+
+  shortNameLabel = new JLabel("  Short Name:  ");
+  shortNameField = new JTextField();
+  shortNameField.setColumns(14);
+  shortNameField.setText("Hero");
+  shortNameChoice = "Hero";
+  shortNameField.addFocusListener(this);
+
+  suggestNameButton = new JButton("Suggest Name");
+  suggestNameButton.setActionCommand("Suggest");
+  suggestNameButton.setPreferredSize(new Dimension(110,28));
+  suggestNameButton.setBorder(BorderFactory.createRaisedBevelBorder());
+  suggestNameButton.addActionListener(this);
+
+    row5 = new JPanel();
+    row5.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
+    row5.add(suggestNameButton);
+    row5.add(shortNameLabel);
+    row5.add(shortNameField);
+
+  // begin content for row5 - race description box
+//  Popup.createInfoPopup("fields created and set");
+
+  descriptionArea = MyUtils.makeTextBox(32,                // columns
+                                        14,                // rows
+                                        Color.white,       // font color
+                                        Color.black,       // background color
+                                        null);             // initial text
+
+
+   row6 = new JPanel();
+   row6.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
+   row6.add(descriptionArea);
+
+  // add rows to geneticsPanel
+  geneticsPanel.add(row1);
+  geneticsPanel.add(row2);
+  geneticsPanel.add(row3);
+  geneticsPanel.add(row4);
+  geneticsPanel.add(row5);
+  geneticsPanel.add(row6);
+
+  // setup portrait panel and fill with components (right side of screen)
+//  Popup.createInfoPopup("creating portrait panel...");
+
+  portraitPanel = new JPanel();
+  portraitPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 20));
+  portraitPanel.setBorder(BorderFactory.createEtchedBorder());
+
+  // internal objects within portraitPanel
+  portraitLabel = new JLabel("Choose your Character's portrait");
+  portraitLabel.setPreferredSize(new Dimension(195,40));
+
+  // create a nested pane to take care of the alignment
+  portraitChooserPanel = new JPanel();
+  portraitChooserPanel.setLayout(new GridLayout(4, 2, 5, 5));
+  portraitChooserPanel.setSize(200,25);
+
+  lastPortrait = new JButton("Last Portrait");
+  lastPortrait.setBorder(BorderFactory.createRaisedBevelBorder());
+  lastPortrait.setPreferredSize(new Dimension(110,28));
+  lastPortrait.addActionListener(this);
+
+  picturePanel = new JLabel();
+  picturePanel.setBorder(BorderFactory.createRaisedBevelBorder());
+
+// set file to picturePanel background (start from beginning)
+//  Popup.createInfoPopup("panel and buttons created and set, attempting to resetPicturePanel");
+  resetPicturePanel();
+
+  nextPortrait = new JButton("Next Portrait");
+  nextPortrait.setBorder(BorderFactory.createRaisedBevelBorder());
+  nextPortrait.setPreferredSize(new Dimension(110,28));
+  nextPortrait.addActionListener(this);
+
+//  Popup.createInfoPopup("portrait area created and set");
+
+  // create ColorChooser
+  colorChooser = new JColorChooser();
+  dialog = JColorChooser.createDialog(this,
+                                     "Choose your character's color",
+                                     true,  //modal
+                                     colorChooser,
+                                     this,  //OK button handler
+                                     null); //no CANCEL button handler
+
+  // create colorChooserButtons
+  skinColorButton = new ColorChooserButton("Skin Color", this);
+    skinColorButton.setDesc(skinColorDesc);
+    skinColorButton.setColor(Constants.SKIN_COLOR);
+
+  hairColorButton = new ColorChooserButton("Hair Color", this);
+    hairColorButton.setDesc(hairColorDesc);
+    hairColorButton.setColor(Constants.HAIR_COLOR);
+
+  majorColorButton = new ColorChooserButton("Major Color", this);
+    majorColorButton.setDesc(majorColorDesc);
+
+  minorColorButton = new ColorChooserButton("Minor Color", this);
+    minorColorButton.setDesc(minorColorDesc);
+
+  // add components to portraitChooserPanel
+  portraitChooserPanel.add(lastPortrait);
+  portraitChooserPanel.add(nextPortrait);
+
+  portraitChooserPanel.add(new JLabel("")); // spacers
+  portraitChooserPanel.add(new JLabel(""));
+
+  portraitChooserPanel.add(skinColorButton);
+  portraitChooserPanel.add(hairColorButton);
+  portraitChooserPanel.add(majorColorButton);
+  portraitChooserPanel.add(minorColorButton);
+
+  // add components to portraitPanel
+  portraitPanel.add(portraitLabel);
+  portraitPanel.add(picturePanel);
+  portraitPanel.add(portraitChooserPanel);
+
+  // add genetics and portrait to central panel
+  centralPanel.add(geneticsPanel);
+  centralPanel.add(portraitPanel);
+//  Popup.createInfoPopup("Genetics Screen constructor finished.");
+
+} // end constructor
+
+// ************************************************************
+// public methods
+// ************************************************************
+
+public void actionPerformed(ActionEvent e){
+
+String command = e.getActionCommand();
+
+// possible actions from buttons: Suggest, Last Portrait, Next Portrait
+  if (command == "Suggest"){
+    if (Constants.debugMode == true)
+    setErrorLabel("command: " + command + " recognized!", Color.black);
+    fullNameField.setText(suggestName());
+    fullNameField.setCaretPosition(0); // this makes sure to show the beginning of the name, if too long.
+    fullNameChoice = fullNameField.getText();
+
+    shortNameField.setText(MyTextIO.getNextWord(fullNameChoice));
+    shortNameChoice = shortNameField.getText();
+
+    descriptionArea.setText(nameDescriptionMessage);
+  } // end "Suggest" response
+
+  // ************************************************************
+  else if (command == "Last Portrait"){
+    if (Constants.debugMode == true)
+    setErrorLabel("command: " + command + " recognized!", Color.black);
+    // decrement the index of the picture array, wrapping if at beginning
+        picFileNumber -= 1;
+
+    // show the picture at the new index
+        picturePanel.setIcon(getPicFileName(picFileNumber));
+
+  } // end "last pic" response
+
+  // ************************************************************
+  else if (command == "Next Portrait"){
+    if (Constants.debugMode == true)
+    setErrorLabel("command: " + command + " recognized!", Color.black);
+    // increment the index of the picture array, wrapping if at the end
+    picFileNumber += 1;
+
+    // show the picture at the new index
+    picturePanel.setIcon(getPicFileName(picFileNumber));
+  } // end "next pic" response
+
+  // ************************************************************
+  else if (command == "comboBoxChanged"){
+    // now, find the source
+    JComboBox changedBox = (JComboBox)e.getSource();
+
+    if(changedBox == genderList){
+      genderChoice = (String)changedBox.getSelectedItem();
+      if (Constants.debugMode == true)
+      setErrorLabel("You have chosen " + genderChoice + " from the gender options.", Color.black);
+      descriptionArea.setText(genderDescription);
+      resetPicturePanel();
+    } // end genderList
+
+    if(changedBox == raceList){
+      // then we know that the user has changed the race comboBox, so...
+      // change the label for the lifespan
+      raceChoice = (String)raceList.getSelectedItem();
+      avgLifespanLabel.setText("  The average " +  raceChoice +
+                         " lifespan is: " + (Race.getAvgLifeSpanStr(raceChoice)) + ".");
+      // give feedback:
+      if (Constants.debugMode == true)
+      setErrorLabel("You have chosen " + raceChoice + " from the race options.", Color.black);
+
+      for (int i = 0; i < Race.races.length; i++){
+        if (Race.races[i].getName().equalsIgnoreCase(raceChoice)){
+          descriptionArea.setText(Race.races[i].getRaceDescription());
+        } // end if
+      } // end for loop
+      resetPicturePanel();
+    } // end raceList changed response
+  }  // end JComboBoxChanged response
+
+  // ************************************************************
+  else if (command == skinColorButton.getTitle()  ||
+           command == hairColorButton.getTitle()  ||
+           command == majorColorButton.getTitle() ||
+           command == minorColorButton.getTitle()){
+
+    ColorChooserButton colorButton = (ColorChooserButton)e.getSource();
+
+    descriptionArea.setText(colorButton.getDesc());
+    colorButton.showColorChooser(colorChooser);
+  } // end skin
+
+  // ************************************************************
+  else { // not a button, not ageComboBox, not raceComboBox, so, unknown.
+    if (Constants.debugMode == true)
+    setErrorLabel("  error: command: " + command + " is unknown, sorry.", Color.red);
+  }  // end error response
+
+} // end actionPerformed
+
+public void focusLost(FocusEvent e){
+  if (e.getSource() == fullNameField){
+    // user has possibly changed the name field and now left that field
+
+    fullNameChoice = fullNameField.getText();
+    if (Constants.debugMode == true)
+    this.setErrorLabel("You have set your character's name to be: '" + fullNameChoice + "'.",Color.blue);
+
+    if (shortNameField.getText().length() < 1)
+      shortNameField.setText(MyTextIO.getNextWord(fullNameChoice));
+  } // end nameField
+
+  else if (e.getSource() == shortNameField){
+    // user has possibly changed the name field and now left that field
+
+    shortNameChoice = shortNameField.getText();
+    if (Constants.debugMode == true)
+    this.setErrorLabel("You have set your character's name to be: '" + shortNameChoice + "'.",Color.blue);
+  } // end nameField
+
+  else if (e.getSource() == ageField){
+    // user has possibly changed the age field and now left that field
+    ageChoice = ageField.getText();
+
+    // NOTE: now we need to check age for clarity both syntax and symantics
+    try{
+      ageNumber = Integer.parseInt(ageChoice);
+    } // end try
+
+    catch(NumberFormatException evt){
+      // user has entered a string that is not a number
+
+      Popup.createErrorPopup("'" + ageChoice + "'" + " is not a valid age, Please try again.");
+      ageField.setText("25");
+      ageNumber = 25;
+    } // end catch
+
+    if (ageNumber < 1) {
+      Popup.createErrorPopup("<html><center>Really?  I don't think you meant to put that for your character's age. <br>Please try again.</center></html>");
+      ageField.setText("25");
+    } // end if too young
+
+    if (ageNumber > Race.getAvgLifeSpanInt(raceChoice)){
+      Popup.createWarningPopup("<html><center>Really?  I don't think you meant to set that as your character's age. <br>I'll let you keep that age if you're sure.</center></html>");
+    } // end if too old
+
+    if(Constants.debugMode == true)
+      this.setErrorLabel("Character's age set as: '" + ageNumber + "'.",Color.blue);
+
+  } // end ageField
+} // end focusLost
+
+public void focusGained(FocusEvent e){
+  if (e.getSource() == fullNameField ||
+      e.getSource() == shortNameField)
+    descriptionArea.setText(nameDescriptionMessage);
+} // end focusGained
+
+PlayerCharacter getCharacter(){
+  playerCharacter.setGender(genderChoice);
+  playerCharacter.setRace(Race.getRace(raceChoice));
+  playerCharacter.setPicPath(picPath);
+  playerCharacter.setPortraitPictureLarge(picPathAndFileLarge);
+  playerCharacter.setPortraitPictureSmall(picPathAndFileSmall);
+  playerCharacter.setFullName(fullNameChoice);
+  playerCharacter.setShortName(shortNameChoice);
+  playerCharacter.setAge(Integer.parseInt(ageChoice)); // throws numberFormat Exception
+  playerCharacter.setSkinColor(skinColorButton.colorSwatch.getBackground());
+  playerCharacter.setHairColor(hairColorButton.getColor());
+  playerCharacter.setMajorColor(majorColorButton.getColor());
+  playerCharacter.setMinorColor(minorColorButton.getColor());
+
+  return playerCharacter;
+}; // end getCharacter()
+
+// ************************************************************
+// private methods
+// ************************************************************
+
+   private String suggestName (){
+    // get race, and gender
+    // look into list of names from given variables
+    // choose randomly from the list
+    // set text with chosen name
+
+    // check race to see what to do
+    if (raceChoice.equalsIgnoreCase("Human")){
+      return Names.getHumanName(genderChoice);
+    } // suggest human name
+
+    else if (raceChoice.equalsIgnoreCase("Elf")){
+      return Names.getElfName(genderChoice);
+    } // end suggest elf name
+
+    else if (raceChoice.equalsIgnoreCase("Dwarf")){
+      return Names.getDwarfName(genderChoice);
+    } // end suggest dwarf name
+
+    else if (raceChoice.equalsIgnoreCase("Gnome")){
+      return Names.getGnomeName(genderChoice);
+    } // end suggest gnome name
+
+    else if (raceChoice.equalsIgnoreCase("Halfling")){
+      return Names.getHalflingName(genderChoice);
+    } // end suggest halfling name
+
+    else if (raceChoice.equalsIgnoreCase("Half-Orc")){
+      return Names.getHalfOrcName(genderChoice);
+    } // end suggest half-orc name
+
+    else { // raceChoice is unknown
+      return "Joseph Awsome Pants";
+    } // end else or unknown
+  } // end suggestName()
+
+  private ImageIcon getPicFileName(int i){
+    ImageIcon image;
+    picFileNumber = i;
+
+    picPath = "Images/Portraits/" + raceChoice + "/" + genderChoice + "/";
+//    Popup.createInfoPopup("setting pic path with raceChoice of: " + raceChoice + MyTextIO.newline + "path: " + picPath);
+
+    if (picFileNumber < 10){ // we need to add two placeholders
+      picPathAndFileLarge = picPath + "0" + "0" + String.valueOf(picFileNumber) + "L.jpg";
+      picPathAndFileSmall = picPath + "0" + "0" + String.valueOf(picFileNumber) + "S.jpg";
+      } // end if 1-9
+
+    else if (picFileNumber > 9 && picFileNumber < 100){ // add one placeholder
+      picPathAndFileLarge = picPath + "0" + String.valueOf(picFileNumber) + "L.jpg";
+      picPathAndFileSmall = picPath + "0" + String.valueOf(picFileNumber) + "S.jpg";
+      } // end if 10-99
+
+    else {  // picFileNumber > 100
+      picPathAndFileLarge = picPath + String.valueOf(picFileNumber) + "L.jpg";
+      picPathAndFileSmall = picPath + String.valueOf(picFileNumber) + "S.jpg";
+      } // end if 100-999
+
+    if (new File(picPathAndFileLarge).isFile() == false){
+      if (picFileNumber == 0){
+        /* at this point, we know we are attempting to look at the last pic
+         * in the directory, so we need to quickly find the last pic
+         * in the series.
+         */
+        int num = 1;
+        while (true){
+          // cycle through the list, exiting when it reaches null,
+          // thus returning the last non-null, which will be our last pic.
+
+          if (num < 10){
+            File f = new File(picPath + "0" + "0" + String.valueOf(num) + "L.jpg");
+            if (f.isFile()){num++; continue;}
+          } // end if < 10
+
+          else if (num <100){
+            File f = new File(picPath + "0" + String.valueOf(num) + "L.jpg");
+            if (f.isFile()){num++; continue;}
+          } // end <100
+
+          else {
+            File f = new File(picPath + String.valueOf(num) + "L.jpg");
+            if (f.isFile()) {num++; continue;}
+          } // end else (num =>100)
+
+          // At this point, if we have not continued then it is invalid, so we break!
+          break;
+        } // end while
+
+        // POST we have the value num, which represents the first null pic,
+        // so one less is the last real picture.
+        picFileNumber = num - 1;
+      } // end if 0
+
+      else {picFileNumber = 1;} // end if null and not zero (off end of list)
+
+      return getPicFileName(picFileNumber);
+    }  // end isFile == false
+
+    image = Res.getImage(picPathAndFileLarge);
+
+    if (Constants.debugMode == true)
+    setErrorLabel("you are looking at picture #" + picFileNumber, Color.black);
+    return image;
+
+  } // end getPicFileName
+
+  private void resetPicturePanel(){
+  // the purpose of this method is to attain the most recent
+  // gener choice, and reset the picture number to begin loading the first
+  // picture in the list.
+//  Popup.createInfoPopup("attempting to reset Picture Panel");
+  picFileNumber = 1;
+  picturePanel.setIcon(getPicFileName(picFileNumber));
+  } // end resetPicturePanel
+
+  void clearInfo(){} // end clearInfo
+
+// ************************************************************
+  private String[] getPlayableRaceNames(){
+    // the purpose of this method is to read the race names of the playable races
+    // into the array.
+
+    int numRaces = MyTextIO.getNumLines(FileNames.RACES) - 2; // -2 for the title and 0 index
+    int numPlayableRaces = 0;
+    String tempResult = "";
+
+    for (int i = 0; i < numRaces; i++){
+      // for each race in the array, we need to make sure that it is playable.
+      if (Race.races[i].isPlayable()){
+        numPlayableRaces +=1;
+        tempResult += (Race.races[i].getName() + " ");
+      } // end if
+    } // end for loop
+
+    //at this point, we know how many are playable, so we can create the restulting string Array
+
+//    Popup.createInfoPopup("number of playable races: " + numPlayableRaces);
+
+    String[] playableRaces = new String[numPlayableRaces];
+
+    //now we can fill the array with the names of the playable races.
+
+    for (int i = 0; i < playableRaces.length; i++){
+      playableRaces[i] = MyTextIO.getNextWord(tempResult);
+      tempResult = MyTextIO.trimWord(tempResult);
+    } // end for loop
+
+    return playableRaces;
+
+  } // end getPlayableRaceNames()
+
+} // end GeneticsScreen class

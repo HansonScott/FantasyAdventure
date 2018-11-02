@@ -1,0 +1,100 @@
+package fantasy_adventure;
+
+//************************************************************************
+//imports
+import java.awt.*;       // supports basic GUI components
+import java.awt.event.*; // supports listeners
+import javax.swing.*;    // supports swing GUI components
+
+//************************************************************************
+
+public class RelationsTab extends    JPanelWithBackground
+                          implements ActionListener,
+                                     MouseListener,
+                                     KeyListener{
+
+  /* The purpose of this class is to communicate all the
+   * componenets and options relating to the party relations
+   * with one another, including dispositions.
+   */
+
+//************************************************************************
+// static declarations
+//************************************************************************
+
+  static final Int INSET_FOR_TAB = 30;
+
+//************************************************************************
+// member declarations
+//************************************************************************
+
+
+//************************************************************************
+// constructors
+//************************************************************************
+
+  public RelationsTab() {
+    // the purpose of this constructor is to create the interface
+    super();
+
+    setPreferredSize(new Dimension(Constants.CENTRALPANEL_WIDTH,
+                                   Constants.CENTRALPANEL_HEIGHT - INSET_FOR_TAB));
+
+    // now create the internal components and add them.
+
+
+  } // end constructor
+
+//************************************************************************
+// public methods
+//************************************************************************
+
+  public void actionPerformed(ActionEvent a){
+    
+  } // end actionPerformed
+
+//************************************************************************
+  public void MousePressed(MouseEvent m){
+    
+  } // end mouseEvent
+
+//************************************************************************
+  public void MouseReleased(MouseEvent m){
+    
+  } // end mouseEvent
+
+//************************************************************************
+  public void MouseClicked(MouseEvent m){
+    
+  } // end mouseEvent
+
+//************************************************************************
+  public void KeyPressed(KeyEvent k){
+    
+  } // end keyPressed
+
+//************************************************************************
+  public void KeyReleased(KeyEvent k){
+    
+  } // end keyReleased
+
+//************************************************************************
+  public void KeyTyped(KeyEvent k){
+    
+  } // end keyTyped
+
+//************************************************************************
+// package methods
+//************************************************************************
+
+//************************************************************************
+// static methods
+//************************************************************************
+
+//************************************************************************
+// private methods
+//************************************************************************
+
+//************************************************************************
+} // end class RelationsTab
+//************************************************************************

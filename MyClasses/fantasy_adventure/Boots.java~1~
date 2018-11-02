@@ -1,0 +1,228 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+public class Boots extends Armor {
+
+//**********************************************************
+// static declarations
+
+  static ItemBasics BASICS_SOFT;
+  static ItemBasics BASICS_HARD;
+  static ItemBasics BASICS_GREAVES;
+
+  static int SPEED_MAX_SOFT    = 6;
+  static int SPEED_MAX_HARD    = 4;
+  static int SPEED_MAX_GREAVES = 2;
+
+//**********************************************************
+// member declarations
+
+  private int maxSpeed;
+
+//**********************************************************
+// Constructor
+//**********************************************************
+  public Boots (){} // end default constructor
+
+  public Boots (int type){
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcBootsStats();
+    updateDetails();
+  } // end constructor
+
+//**********************************************************
+// Public methods
+//**********************************************************
+  public int  getMaxSpeed ()      {return maxSpeed;} // end getMaxSpeed()
+  public void setMaxSpeed (int s) {maxSpeed = s;}    // end setmaxSpeed()
+
+//******************************************************************************
+  void writeBootsToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeItemToFile(bw);
+
+    // now we can write our own details onto the file...
+    bw.write("Boots properites:");
+    bw.write(MyTextIO.tab + "Speed:"     + MyTextIO.tab + getMaxSpeed());
+    bw.newLine();
+  } // end writeToFile
+
+//******************************************************************************
+  static Boots readBootsFromFile (int type, BufferedReader br) throws IOException{
+
+    Boots thisItem = new Boots(type);
+    thisItem.readItemFromFile(br);
+
+    // now we can read our details onto the line...
+    String thisLine = br.readLine();
+
+    thisLine = MyTextIO.trimPhrase(thisLine); // remove title "Boots properties"
+
+    thisLine = MyTextIO.trimPhrase(thisLine); // remove variable title
+    thisItem.setMaxSpeed(Integer.parseInt(MyTextIO.getNextPhrase(thisLine))); // captures variable
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//**********************************************************
+// static methods
+//**********************************************************
+  public static Item generateRandomSoft(){
+    Boots thisItem = new Boots(Item.BOOTS_SOFT);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBootsStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomSoft
+
+//**********************************************************
+  public static Item generateRandomHard(){
+    Boots thisItem = new Boots(Item.BOOTS_HARD);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBootsStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomHard
+
+//**********************************************************
+  public static Item generateRandomGreaves(){
+    Boots thisItem = new Boots(Item.BOOTS_GREAVES);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBootsStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomGreaves
+
+//**********************************************************
+  public static Item generateRandomBoots() {
+    switch(Roll.D3()){
+      case 1:  return generateRandomSoft();
+      case 2:  return generateRandomHard();
+      case 3:  return generateRandomGreaves();
+      default: return generateRandomHard();
+    } // end switch
+  } // end generateRandomBoots()
+
+//**********************************************************
+// private methods
+//**********************************************************
+  private void calcBootsStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+    if      (getType() == Item.BOOTS_SOFT){
+      setMaxSpeed(SPEED_MAX_SOFT);
+      setInventoryIcon(BASICS_SOFT.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_SOFT.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_SOFT.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_SOFT.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_SOFT.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_SOFT.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end soft
+
+    else if (getType() == Item.BOOTS_HARD){
+      setMaxSpeed(SPEED_MAX_HARD);
+      setInventoryIcon(BASICS_HARD.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_HARD.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_HARD.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_HARD.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_HARD.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_HARD.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end hard
+
+    else if (getType() == Item.BOOTS_GREAVES){
+      setMaxSpeed(SPEED_MAX_GREAVES);
+      setInventoryIcon(BASICS_GREAVES.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_GREAVES.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_GREAVES.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_GREAVES.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_GREAVES.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_GREAVES.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end greaves
+
+    else {}
+
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+  } // end calcBootStats
+
+} // end class

@@ -1,0 +1,137 @@
+package fantasy_adventure;
+
+import java.awt.*;
+import javax.swing.*;
+import java.io.Serializable;
+import java.io.*;
+
+//************************************************************************
+//imports
+
+//************************************************************************
+public class MyUtils implements Serializable{
+
+  /* The purpose of this class is to offer commonly used methods and
+   * variables that do not fit into a specific class, or are used
+   * in multiple classes, for code refactoring purposes.
+   *
+   */
+
+//************************************************************************
+// static variables
+//************************************************************************
+
+  private static final int bufferSize = 1024; // numBytes in the area files for copying.
+
+//************************************************************************
+// static methods
+//************************************************************************
+  static JTextArea makeTextBox(int    cols,
+                               int    rows,
+                               Color  font,
+                               Color  background,
+                               String s){
+
+    /* purpose of this method is to refactor all the times
+     * we need to make a simple textBox into one place,
+     * passing the common variables to handle the details.
+     */
+
+    JTextArea textBox = new JTextArea();
+
+    textBox.setColumns(cols);
+    textBox.setRows(rows);
+
+    textBox.setBorder(BorderFactory.createLoweredBevelBorder());
+    textBox.setLineWrap(true);
+    textBox.setWrapStyleWord(true);
+    textBox.setForeground(font);
+    textBox.setDisabledTextColor(font);
+    textBox.setBackground(background);
+    textBox.setEditable(false);
+    textBox.setSelectedTextColor(font);
+    textBox.setSelectionColor(background);
+    textBox.setText(s);
+
+    return textBox;
+
+  } // end makeTextBox
+
+//************************************************************************
+  static JTextArea makeEditableTextBox(int cols,
+                                       int rows,
+                                       Color font,
+                                       Color background,
+                                       String s){
+      /* purpose of this method is to refactor all the times
+       * we need to make a simple textBox into one place,
+       * passing the common variables to handle the details.
+       */
+
+  JTextArea textBox = new JTextArea();
+
+  textBox.setColumns(cols);
+  textBox.setRows(rows);
+
+  textBox.setBorder(BorderFactory.createLoweredBevelBorder());
+  textBox.setLineWrap(true);
+  textBox.setWrapStyleWord(true);
+  textBox.setForeground(font);
+  textBox.setBackground(background);
+  textBox.setEditable(true);
+  textBox.setText(s);
+
+  textBox.setCaretColor(font);
+  textBox.setSelectedTextColor(background);
+  textBox.setSelectionColor(font);
+
+  return textBox;
+
+  } // end makeEditableTextBox
+
+
+//************************************************************************
+  protected static JLabel makeSpacerLabel(int w,int h) {
+    JLabel label = new JLabel("");
+    label.setPreferredSize(new Dimension(w, h));
+    if (Constants.debugMode)
+      label.setBorder(BorderFactory.createEtchedBorder());
+    return label;
+  } // end makeSpacerLabel
+
+//************************************************************************
+  public static void copyFile(File src, File dst){
+    // Copies src file to dst file.
+    // If the dst file does not exist, it is created
+//    Popup.createInfoPopup("File src: " + src.getName() + MyTextIO.newline +
+//                          "File dest: " + dst.getName());
+    try{
+      InputStream in = new FileInputStream(src);
+      OutputStream out = new FileOutputStream(dst);
+
+      // Transfer bytes from in to out
+      byte[] buf = new byte[bufferSize];
+      int len;
+      while ( (len = in.read(buf)) > 0) {
+        out.write(buf, 0, len);
+      } // end while
+      in.close();
+      out.close();
+    } // end try
+    catch(FileNotFoundException f){
+      Popup.createErrorPopup("FileNotFound when attempting to copy:" + MyTextIO.newline +
+                             "'" + src.getPath() + "'" + MyTextIO.newline +
+                             "to" + MyTextIO.newline +
+                             "'" + dst.getPath() + "'");
+    } // end catch
+    catch(IOException e){
+      Popup.createErrorPopup("IO Exception when attempting to copy:" + MyTextIO.newline +
+                             "'" + src.getPath() + "'" + MyTextIO.newline +
+                             "to" + MyTextIO.newline +
+                             "'" + dst.getPath() + "'");
+    } // end catch
+  } // end copyFile
+
+//************************************************************************
+} // end class MyUtils
+//************************************************************************

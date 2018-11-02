@@ -1,0 +1,269 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+class Shield extends Armor{
+
+//*****************************************************
+// static declarations
+
+  static ItemBasics BASICS_BUCKLER;
+  static ItemBasics BASICS_ROUND;
+  static ItemBasics BASICS_MEDIUM;
+  static ItemBasics BASICS_TOWER;
+
+  static int BLOCK_BUCKLER = 5;
+  static int BLOCK_ROUND   = 10;
+  static int BLOCK_MEDIUM  = 15;
+  static int BLOCK_TOWER   = 25;
+
+//*****************************************************
+// member declarations
+
+  private int blockChance;
+
+//*****************************************************
+// constructor
+//*****************************************************
+
+  public Shield (int type){
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcShieldStats();
+    updateDetails();
+  } // end constructor
+
+//*****************************************************
+// public methods
+//*****************************************************
+
+  void setBlockChance(int c) {blockChance = c;} // end set
+  int  getBlockChance()      {return blockChance;} // end get
+
+//******************************************************************************
+  void writeToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeToFile(bw);
+
+    // now we can write our own details onto the file...
+    bw.write("Shield properites:");
+    bw.write(MyTextIO.tab + "Block:" + MyTextIO.tab + getBlockChance());
+    bw.newLine();
+  } // end writeToFile
+
+//******************************************************************************
+  static Shield readFromFile (int type, BufferedReader br) throws IOException{
+
+    Shield thisItem = new Shield(type);
+    thisItem.readFromFile(br);
+
+    // now we can read our details onto the line...
+    String thisLine = br.readLine();
+
+    thisLine = MyTextIO.trimPhrase(thisLine); // remove title "Ammo properties"
+
+    thisLine = MyTextIO.trimPhrase(thisLine); // remove variable title
+    thisItem.setBlockChance(Integer.parseInt(MyTextIO.getNextPhrase(thisLine))); // captures variable
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//*****************************************************
+// static methods
+//*****************************************************
+  public static Item generateRandomBuckler() {
+    Shield thisItem = new Shield(Item.SHIELD_BUCKLER);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcShieldStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomBuckler
+
+//*****************************************************
+  public static Item generateRandomRound() {
+    Shield thisItem = new Shield(Item.SHIELD_ROUND);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcShieldStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomRound
+
+//*****************************************************
+  public static Item generateRandomMedium() {
+    Shield thisItem = new Shield(Item.SHIELD_MEDIUM);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcShieldStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomMedium
+
+//*****************************************************
+  public static Item generateRandomTower() {
+    Shield thisItem = new Shield(Item.SHIELD_TOWER);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcShieldStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomTower
+
+//*****************************************************
+  public static Item generateRandomShield() {
+    switch(Roll.D4()){
+      case 1:  return generateRandomBuckler();
+      case 2:  return generateRandomRound();
+      case 3:  return generateRandomMedium();
+      case 4:  return generateRandomTower();
+      default: return generateRandomMedium();
+    } // end switch
+  } // end generateRandomShield
+
+//*****************************************************
+// private methods
+//*****************************************************
+  private void calcShieldStats(){
+      // purpose of this method is to use the material and quality
+      // to create the detailed stats of this item.
+
+      if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+
+    if      (getType() == Item.SHIELD_BUCKLER){
+      setBlockChance(BLOCK_BUCKLER);
+      setInventoryIcon(BASICS_BUCKLER.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_BUCKLER.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_BUCKLER.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_BUCKLER.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_BUCKLER.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_BUCKLER.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if buckler
+
+    else if (getType() == Item.SHIELD_ROUND){
+      setBlockChance(BLOCK_ROUND);
+      setInventoryIcon(BASICS_ROUND.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_ROUND.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_ROUND.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_ROUND.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_ROUND.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_ROUND.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if round
+
+    else if (getType() == Item.SHIELD_MEDIUM){
+      setBlockChance(BLOCK_MEDIUM);
+      setInventoryIcon(BASICS_MEDIUM.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_MEDIUM.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_MEDIUM.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_MEDIUM.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_MEDIUM.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_MEDIUM.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if medium
+
+    else if (getType() == Item.SHIELD_TOWER){
+      setBlockChance(BLOCK_TOWER);
+      setInventoryIcon(BASICS_TOWER.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_TOWER.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_TOWER.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_TOWER.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_TOWER.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_TOWER.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if tower
+    else {}
+
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+  } // end calcShieldStats
+
+//*****************************************************
+} // end class Shield

@@ -1,0 +1,165 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+public class Spiked extends Weapon{
+
+//**********************************************************
+// static declarations
+
+  static ItemBasics BASICS_FLAIL;
+  static ItemBasics BASICS_STAR;
+
+//**********************************************************
+// member declarations
+
+//**********************************************************
+// constructor
+//**********************************************************
+
+  public Spiked(int type){
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcSpikedStats();
+    updateDetails();
+  } // end constructor
+
+//******************************************************************************
+// public methods
+//******************************************************************************
+  void writeSpikedToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeItemToFile(bw);
+
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//******************************************************************************
+  static Spiked readSpikedFromFile (int type, BufferedReader br) throws IOException{
+
+    Spiked thisItem = new Spiked (type);
+    thisItem.readItemFromFile(br);
+
+    // now we can read our details onto the line...
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//**********************************************************
+// static methods
+//**********************************************************
+  public static Item generateRandomFlail() {
+    Spiked thisItem = new Spiked(Item.SPIKED_FLAIL);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcSpikedStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomFlail
+
+//**********************************************************
+  public static Item generateRandomStar() {
+    Spiked thisItem = new Spiked(Item.SPIKED_STAR);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcSpikedStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomStar();
+
+//**********************************************************
+  public static Item generateRandomSpiked() {
+    switch(Roll.D2()){
+      case 1:  return generateRandomFlail();
+      case 2:  return generateRandomStar();
+      default: return generateRandomStar();
+    } // end switch
+  } // end generateRandomSpiked
+
+//**********************************************************
+// private methods
+//**********************************************************
+   private void calcSpikedStats(){
+
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+    if (getType() == Item.SPIKED_FLAIL){
+      setInventoryIcon(BASICS_FLAIL.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_FLAIL.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_FLAIL.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_FLAIL.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_FLAIL.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_FLAIL.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end if FLAIL
+
+    else if (getType() == Item.SPIKED_STAR){
+      setInventoryIcon(BASICS_STAR.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_STAR.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_STAR.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_STAR.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_STAR.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_STAR.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end if STAR
+
+
+    else {} // all types accounted for.
+
+    updateDmgFormula();
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+   } // calcSpikedStats
+
+} // end class ShortBlade

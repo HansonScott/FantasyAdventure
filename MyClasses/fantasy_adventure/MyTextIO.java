@@ -1,0 +1,273 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+
+public class MyTextIO implements Serializable{
+  /* The purpose of this class is to create easy static methods for capturing text
+   * from .csv files and Strings, which is what is used as the data files
+   * within the Fantasy Adventure game.
+   */
+
+  static final String newline           = "\n";
+  static final String tab               = "\t";
+
+  static final int    minTextWidth      = 15;
+  static final int    defaultTextLength = 50;
+
+//********************************************************************************
+// static methods
+//********************************************************************************
+  public static String getRandomLineFromFile(String fileName){
+    // the purpose of this method is to read the fileName and pick, at random,
+    // a line from the file and return it.
+
+    int length = getNumLines(fileName) - 1;
+//  Popup.createInfoPopup("numLines = " + length);
+    String[] stringArray = new String[length + 1];
+    stringArray = readFile(fileName, length);
+    return stringArray[Roll.D(length) - 1];
+
+  } // end getRandomLineFromFile
+
+//********************************************************************************
+  public static String[] readFile(String fileName, int maxLines){
+    // the purpose of this method is to read a .csv file into a String[].
+    String[] stringArray = null;
+    String str = "";
+    try{
+      BufferedReader in = new BufferedReader(new FileReader(fileName));
+      stringArray = new String[maxLines];
+
+      for (int i = 0; i < maxLines && str != null; i++){
+        str = in.readLine();
+        stringArray[i] = str;
+      } // end for loop
+
+      in.close();
+    } // end try
+
+    catch(IOException e){
+      Popup.createErrorPopup("IO problem while attempting to read file: " + fileName);
+    } // end catch
+
+    return stringArray;
+  } // end readFile
+
+//********************************************************************************
+  public static String readOneLineFromFile(String fileName){
+    // The purpose of this method is to read a file that we KNOW is only one line.
+    // This method is specifically used for all the text descriptions
+    // within the various parts of the game.
+
+    try{
+      BufferedReader in = new BufferedReader(new FileReader(fileName));
+      return in.readLine();
+    } // end try
+    catch(IOException e){
+      Popup.createErrorPopup("IO problem while attempting to read file: " + fileName);
+      return null;
+    } // end catch
+  } // end readOneLineFromFile
+
+//********************************************************************************
+  public static String getNextPhrase(String str){
+    // the purpose of this method is to look at the given String and find the first
+    // tab delimiter, and return the phrase leading up to that tab.  If there is no tab,
+    // then it will return the entire string.
+    if (str == null){
+//      Popup.createInfoPopup("I think the String: '" + str + "' is null.");
+      return null;
+    } // if null
+
+    else if (str.length() == 0){
+//      Popup.createInfoPopup("I think the String: '" + str + "' has a length() of 0.");
+      return null;
+    } // if length == 0
+
+    else {
+      int i = str.indexOf(tab); // NOTE: this will include the tab in the phrase passed back!
+//      Popup.createInfoPopup("I think the String: '" + str + "' has a tab at location: " + i);
+
+      if (i == -1) { // there are no tabs left in the line, this is the last phrase.
+        return str;
+      } // if i = -1
+
+      else if (i == 0) { // tab is the first character in the line, trim it and return the phrase after.
+        return getNextPhrase(str.substring(1, str.length()));
+      } // end if tab first
+
+      else if (i == str.length()) {
+          // there is a tab, but at the very end of this phrase
+          // so we need to return this opening phrase, without the tab. (thus the -1)
+        return str.substring(0, str.length() - 1);
+      } // end i == length()
+
+      else {// else (tab in the middle, not beginning or end
+        return str.substring(0, i); // return all chars up to, but not including the tab
+      }
+    } // end else (there is a string to be worked on)
+  } // end getNextPhrase()
+
+//********************************************************************************
+  public static String trimPhrase(String str){
+    // The purpose of this method is to trim the first phrase from the given String.
+    // If there is only one phrase in the String, then it will retun null.
+
+    // first we needs to find out how long that phrase was, so we know where to trim.
+    if (str == null)return null;
+    if (str.length() == 0) return null;
+    int i = 0;
+    try{
+      i = getNextPhrase(str).length();
+    } // end try
+    catch(NullPointerException e){
+      Popup.createErrorPopup("Sorry, N.P.E. while trying to trim the phrase: '" + str + "' which is NOT null.");
+      return null;
+    } // end catch
+    // now, we know the length of the phrase to trim,
+    // the issue is if the whole string is the same length, then we want to return null
+
+    // the length of this first phrase is the same as
+    // the whole length of the string, so we need to
+    // trim everything, thus returning null.
+    if(str.length() == i)return null;
+    else {
+      // there is at least one more phrase after trimming this one,
+      // so only trim up to the beginning of that phrase.
+      return str.substring(i + 1); // +1 to trim the tab
+    } // end else
+  } // end trimPhrase
+
+//********************************************************************************
+  public static String getNextWord(String str){
+    // The purpose of this method is to find the first space in the String passed,
+    // and return the series of characters leading up to that space.
+    // If there are no spaces in the passed String (last word), then it returns that word.
+    if (str == null) // no string
+      return null;
+    if (str.indexOf(" ") == -1) // there is no space, therefore this is the last word
+      return str;
+    if (str.indexOf(" ") == 0) // the next word has a space before it, so remove the space
+      return getNextWord(str.substring(1)); // 1 is the beginning index, without the space
+    return str.substring(0, str.indexOf(" "));
+  } // end getNextWord
+
+//********************************************************************************
+  public static String trimWord(String s){
+    // The purpose of this method is to trim off the first word in the passed String,
+    // returning everything from that point on.  If there is only one word in the String,
+    // then null is returned.
+    if (s == null)return null;
+      int i = getNextWord(s).length();
+    if (s.length() == i)return null;
+      return s.substring(i + 1); // the +1 takes off the space
+  } // end trimWord
+
+//********************************************************************************
+  public static int getNumLines(String fileName){
+    // The purpose of this method is to read the file from the filename passed
+    // and return the number of lines it has, so we know how long of an array to make.
+    try{
+      BufferedReader in = new BufferedReader(new FileReader(fileName));
+      int i = 0;
+      String str = " ";
+      for (i = 0; str != null; i++){
+        str = in.readLine();
+      } // end for loop
+      in.close();
+      return i;
+    } // end try
+
+    catch(IOException e){
+      Popup.createErrorPopup("IO problem while attempting to read file: " + fileName);
+    } // end catch
+    return 0;
+  } // end getNumLines(filename)
+
+//********************************************************************************
+  public static String createMultiLine(String s, int maxLength){
+    // the purpose of this method is to change a single line String
+    // into a multiline String under the mexLength passed.
+    // This is done by recursion, in case the string needs multiple divisions.
+
+    // basically, we want to cut the string off at the last word within maxLength,
+    // then call this method again on the rest of the string.
+    // if we get a string that is under the max length, then we can return it in full.
+
+    // First things first, handle all the errors:
+//Popup.createInfoPopup("Attempting to create a multiLine from string: \n" + s);
+    if (s == null) return null;
+    if (maxLength < minTextWidth){
+      Popup.createWarningPopup("While attempting to divide a string, " +
+                               "the maxLength requested is too small, maxLength passed: " +
+                               maxLength + MyTextIO.newline +
+                               "Using default instead: " + defaultTextLength);
+      maxLength = defaultTextLength;
+    } // end if length too small
+
+    // now, first, the finishing condition
+    if (s.length() <= maxLength) return s;
+
+    // now, if the string is too long, then we want to break it up into 2 parts,
+    String thisLine = "";
+    String rest = s;
+
+    // we need to capture as much of the rest as we can in thisLine, until maxLength is reached.
+
+    while ((thisLine.length() + MyTextIO.getNextWord(rest).length()) <= maxLength){
+      // we are in this loop becase the next word is still under the limit.
+
+      // so, we should add the next word to thisLine...
+      thisLine = (thisLine + " " + MyTextIO.getNextWord(rest));
+
+      //  and remove it from the rest.
+      rest = MyTextIO.trimWord(rest);
+    } // end while
+
+    // return maxed out line plus the rest (recursively)
+    return (thisLine + newline + createMultiLine(rest, maxLength));
+} // end createMultiLine
+
+// *********************************************************************
+  public static String makeInitialCaps(String s){
+    String result;
+    s = s.toLowerCase();
+    char c = Character.toUpperCase(s.charAt(0));
+    s = s.substring(1);
+    result = String.valueOf(c) + s;
+    return result;
+  } // end makeInitialCaps
+
+// *********************************************************************
+  public static String getLastWord(String s){
+    // purpose of this method is to analyze the string passed,
+    // and return the last word from the end of the line
+
+    // while there are words left, store the first word and remove it from the line
+    // when there are no more words left, return the last word captured.
+    String lastWord = null;
+
+    while (s != null && s.length() != 0){
+      lastWord = getNextWord(s);
+      s = trimWord(s);
+    } // end while
+    return lastWord;
+
+  } // end getLastWord
+
+// *********************************************************************
+  public static String trimLastWord(String s){
+    // the purpose of this method is to analyze the string passed,
+    // find the last word, and remove it, returning the string without it.
+
+    return s.substring(0, (s.length()
+                           - MyTextIO.getLastWord(s).length() - 1)); // the -1 takes off the space
+
+  } // end trimLastWord
+
+// *********************************************************************
+// private methods
+// *********************************************************************
+
+}  // end class MyTextIO

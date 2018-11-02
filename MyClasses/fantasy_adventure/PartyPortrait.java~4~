@@ -1,0 +1,176 @@
+package fantasy_adventure;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;    // supports swing GUI components
+
+//************************************************************************
+
+class PartyPortrait extends JButton implements ActionListener{
+
+    /* purpose of this class is to create a portrait of each character within
+     * the party accompanying the player character.
+     * This will include the small picture of the character as well as a small
+     * indicator bar for health and mana reserves.  Beyond that, possibly layering
+     * status effects, but that might be better placed in the quick stats panel?
+     */
+
+//************************************************************************
+// static declarations
+//************************************************************************
+
+   static int BAR_WIDTH = 4;
+
+//************************************************************************
+// member declarations
+//************************************************************************
+
+   ImageIcon charPic;
+   JLabel pictureArea;
+   JPanel healthBar;
+   JPanel HPDamageArea;
+   JPanel manaBar;
+   JPanel MPDamageArea;
+
+   SocialObject character;
+
+   boolean charSelected = false;
+
+   PartyPanel thisPanel;
+
+//************************************************************************
+// constructor
+//************************************************************************
+PartyPortrait(SocialObject character, PartyPanel partyPanel){
+  super();
+
+  thisPanel = partyPanel; // this allows us reference to all siblings.
+
+  character = character;
+  // setup JButton
+  setLayout(new BorderLayout());
+  setBackground(Color.black);
+  setPartyPortraitBorder();
+
+  // initializations
+  healthBar = makePointPanel(Color.red);
+  manaBar   = makePointPanel(Color.blue);
+
+  // setup healthBar
+  HPDamageArea = makeDmgPanel();
+  healthBar.add(HPDamageArea);
+
+  // setup manaBar
+  MPDamageArea = makeDmgPanel();
+  manaBar.add(MPDamageArea);
+
+  updateHPMP(character.getCurrentHP(),
+             character.getTempMaxHP(),
+             character.getCurrentMP(),
+             character.getTempMaxMP());
+
+  // setup character portrait
+  pictureArea = new JLabel();
+
+  pictureArea.setPreferredSize(new Dimension(Constants.PORTRAIT_SMALL_WIDTH,
+                                             Constants.PORTRAIT_SMALL_HEIGHT));
+
+  pictureArea.setIcon(new ImageIcon(character.getPortraitPictureSmall()));
+
+  // add health, mana, and picture to JButton
+  add(pictureArea, BorderLayout.WEST);
+  add(healthBar, BorderLayout.CENTER);
+  add(manaBar, BorderLayout.EAST);
+
+  addActionListener(this);
+
+//  setToolTipText(character.getShortName());
+
+} // end constructor
+
+//************************************************************************
+// public methods
+//************************************************************************
+  public void actionPerformed(ActionEvent e){
+    // if this portrait was selected, then unselect all, and select this one.
+    thisPanel.highlightCorrectPortrait(this);
+  } // end ActionEvent(e)
+
+//************************************************************************
+// package methods
+//************************************************************************
+  void setCharSelected(boolean b) {
+    charSelected = b;
+    setPartyPortraitBorder();
+  } // end setCharSelected
+
+//************************************************************************
+  boolean isCharSelected(){return charSelected;}
+
+//************************************************************************
+  protected SocialObject getChar() {return character;}
+
+//************************************************************************
+  void setPartyPortraitBorder() {
+    // purpose of this method is to check the state of the portrait to
+    // determine what color to make the border.
+
+    if (isCharSelected() == true){
+      setBorder(BorderFactory.createLineBorder(Color.green, 2));
+    } // end if
+
+    else if (!isCharSelected()){
+      setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+    } // end else if
+  } // end setPartyPortraitBorder()
+
+//*******************************************************************************
+  void updateHPMP(int currentHP, int maxHP, int currentMP, int maxMP){
+    // the purpose of this method is to change the visual of the HP/MP bars.
+    // basically, just get the info from the character and paint accordingly.
+    int damage = maxHP - currentHP;
+
+    // calculate amount of HP loss, ratio of bar height.
+    // = percentage of damage, thus percent of health missing.
+    damage = (int)( (damage * 100) / maxHP); // represents the percent black
+    damage = (int)((damage * Constants.PORTRAIT_SMALL_HEIGHT) / 100); // translates to pixels on the healthBar
+
+    // create a small black box
+    HPDamageArea.setPreferredSize(new Dimension(BAR_WIDTH, damage));
+
+    int drain = maxMP - currentMP;
+
+    // calculate amount of HP loss, ratio of bar height.
+    // = percentage of drain, thus percent of mana missing.
+    drain = (int)( (drain * 100) / maxMP); // represents the percent black
+    drain = (int)((drain * Constants.PORTRAIT_SMALL_HEIGHT) / 100); // translates to pixels on the healthBar
+
+    // create a small black box
+    MPDamageArea.setPreferredSize(new Dimension(BAR_WIDTH, drain));
+
+  } // end updateHPMP
+
+//*******************************************************************************
+// private methods
+//************************************************************************
+  private JPanel makePointPanel(Color c){
+    JPanel bar = new JPanel(new FlowLayout());
+
+    // setup bar
+    bar.setPreferredSize(new Dimension(BAR_WIDTH,75));
+    bar.setBackground(c);
+    bar.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    return bar;
+  } // end makePointPanel
+
+//************************************************************************
+  private JPanel makeDmgPanel(){
+    JPanel dmgPanel = new JPanel();
+    dmgPanel.setSize(BAR_WIDTH,0);
+    dmgPanel.setBackground(Color.black);
+    dmgPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    return dmgPanel;
+  } // end makeDmgPanel
+
+//************************************************************************
+} // end class PartyPortrait

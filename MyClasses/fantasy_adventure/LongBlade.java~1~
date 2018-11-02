@@ -1,0 +1,208 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+public class LongBlade extends Weapon{
+
+//**********************************************************
+// static declarations
+
+  static ItemBasics BASICS_STRAIGHT;
+  static ItemBasics BASICS_CURVED;
+  static ItemBasics BASICS_2HANDED;
+
+//**********************************************************
+// member declarations
+
+//**********************************************************
+// constructor
+//**********************************************************
+
+  public LongBlade(int type){
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcLongBladeStats();
+    updateDetails();
+  } // end constructor
+
+//******************************************************************************
+// public methods
+//******************************************************************************
+  void writeLongBladeToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeItemToFile(bw);
+
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//**********************************************************
+// static methods
+//******************************************************************************
+  static LongBlade readLongBladeFromFile (int type, BufferedReader br) throws IOException{
+
+    LongBlade thisItem = new LongBlade(type);
+    thisItem.readItemFromFile(br);
+
+    // now we can read our details onto the line...
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//**********************************************************
+  public static Item generateRandomStraight() {
+    LongBlade thisItem = new LongBlade(Item.LONG_BLADE_STRAIGHT);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcLongBladeStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomStraight
+
+//**********************************************************
+  public static Item generateRandomCurved() {
+    LongBlade thisItem = new LongBlade(Item.LONG_BLADE_CURVED);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcLongBladeStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomCurved();
+
+//**********************************************************
+  public static Item generateRandom2Handed() {
+    LongBlade thisItem = new LongBlade(Item.LONG_BLADE_2H);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcLongBladeStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandom2Handed()
+
+//**********************************************************
+  public static Item generateRandomLongBlade() {
+    switch(Roll.D3()){
+      case 1:  return generateRandomStraight();
+      case 2:  return generateRandomCurved();
+      case 3:  return generateRandom2Handed();
+      default: return generateRandomStraight();
+    } // end switch
+  } // end generateRandomLongBlade
+
+//**********************************************************
+// private methods
+//**********************************************************
+
+  private void calcLongBladeStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+    if (getType() == Item.LONG_BLADE_STRAIGHT){
+      setInventoryIcon(BASICS_STRAIGHT.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_STRAIGHT.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_STRAIGHT.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_STRAIGHT.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_STRAIGHT.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_STRAIGHT.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end if straight
+
+    else if (getType() == Item.LONG_BLADE_CURVED){
+      setInventoryIcon(BASICS_CURVED.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_CURVED.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_CURVED.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_CURVED.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_CURVED.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_CURVED.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end if curved
+
+    else if (getType() == Item.LONG_BLADE_2H){
+      setInventoryIcon(BASICS_2HANDED.getImageName());
+
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_2HANDED.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_2HANDED.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_2HANDED.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_2HANDED.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_2HANDED.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end if 2handed
+
+    else {} // all types accounted for.
+
+    updateDmgFormula();
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+  } // end calcLongBladeStats
+//*******************************************************************
+
+} // end class LongBlade

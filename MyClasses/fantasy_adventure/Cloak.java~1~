@@ -1,0 +1,114 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+public class Cloak extends Armor {
+
+//**********************************************************
+// static declarations
+
+  static ItemBasics BASICS_CLOAK;
+
+//**********************************************************
+// member declarations
+
+//**********************************************************
+// constructor
+//**********************************************************
+
+  public Cloak(int type){
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcCloakStats();
+    updateDetails();
+  } // end constructor
+
+//**********************************************************
+// public methods
+//**********************************************************
+  void writeCloakToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeItemToFile(bw);
+
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//******************************************************************************
+  static Cloak readCloakFromFile (int type, BufferedReader br) throws IOException{
+
+    Cloak thisItem = new Cloak(type);
+    thisItem.readItemFromFile(br);
+
+    // now we can read our details onto the line...
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//**********************************************************
+// static methods
+//**********************************************************
+  public static Item generateRandomCloak() {
+    Cloak thisItem = new Cloak(Item.CLOAK);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcCloakStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomCloak()
+
+//**********************************************************
+// private methods
+//**********************************************************
+  private void calcCloakStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+    if (getType() == Item.CLOAK){
+      setInventoryIcon(BASICS_CLOAK.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_CLOAK.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_CLOAK.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_CLOAK.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_CLOAK.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setEquipmentDefense(
+        Formulas.calcItemStat(BASICS_CLOAK.getEquipmentDefense(),
+                              getMaterial().getDefenseFactor(),
+                              getQuality().getDefenseFactor()));
+
+    } // end if cloak
+
+    else{}
+
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+  } // end calcCloakStats
+
+//**********************************************************
+} // end class

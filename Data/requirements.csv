@@ -1,0 +1,63 @@
+numReq	Req1	itemName (not item type!)
+0	Artifact
+0	RING
+0	AMULET
+0	Gem
+0	GOLD
+0	POTION
+1	Intelligence >= 10	SCROLL
+0	ARROW
+0	BOLT
+0	BULLET
+1	Constitution >= 4	ROBE
+1	Constitution >= 4	CLOAK
+2	Strength >= 12	Constitution >= 11	Normal Helmet
+2	Strength >= 6	Constitution >= 4	Circlet
+2	Strength >= 10	Constitution >= 10	Beast Head
+2	Strength >= 6	Constitution >= 6	Hood
+2	Strength >= 8	Constitution >= 8	LIGHT Armor
+2	Strength >= 11	Constitution >= 10	Medium Armor
+2	Strength >= 14	Constitution >= 12	Heavy Armor
+3	Strength >= 6	Dexterity >= 12	Constitution >= 6	Buckler
+3	Strength >= 8	Dexterity >= 10	Constitution >= 8	Round shield
+3	Strength >= 11	Dexterity >= 9	Constitution >= 10	Medium Shield
+3	Strength >= 14	Dexterity >= 8	Constitution >= 12	Tower Shield
+3	Strength >= 9	Dexterity >= 10	Constitution >= 9	Bracers
+3	Strength >= 12	Dexterity >= 6	Constitution >= 10	Gauntlets
+3	Strength >= 4	Dexterity >= 8	Constitution >= 6	Gloves
+3	Strength >= 4	Dexterity >= 8	Constitution >= 4	Soft Boots
+3	Strength >= 8	Dexterity >= 7	Constitution >= 6	Hard Boots
+3	Strength >= 12	Dexterity >= 6	Constitution >= 9	Greaves
+3	Strength >= 7	Dexterity >= 6	Constitution >= 8	Light Belt
+3	Strength >= 10	Dexterity >= 6	Constitution >= 10	Heavy Belt
+2	Strength >= 6	Dexterity >= 6	Small Axe
+2	Strength >= 8	Dexterity >= 7	Medium Axe
+2	Strength >= 10	Dexterity >= 8	Large Axe
+2	Strength >= 13	Dexterity >= 9	Massive Axe
+2	Strength >= 6	Dexterity >= 4	CLUB
+2	Strength >= 5	Dexterity >= 5	HAMMER
+2	Strength >= 5	Dexterity >= 5	MACE
+2	Strength >= 13	Dexterity >= 7	MAUL
+2	Strength >= 5	Dexterity >= 7	STAFF
+2	Strength >= 6	Dexterity >= 10	Flail
+2	Strength >= 6	Dexterity >= 6	Morning Star
+0	FIST
+2	Strength >= 5	Dexterity >= 6	KNUCKLES
+2	Strength >= 5	Dexterity >= 12	CLAWS
+2	Strength >= 5	Dexterity >= 10	Punch Dagger
+3	Strength >= 8	Dexterity >= 12	Intelligence >= 9	Bow
+3	Strength >= 5	Dexterity >= 11	Intelligence >= 10	Crossbow
+3	Strength >= 6	Dexterity >= 10	Intelligence >= 8	Sling
+2	Strength >= 9	Dexterity >= 10	Straight LONG Blade
+2	Strength >= 6	Dexterity >= 12	curved LONG Blade
+2	Strength >= 12	Dexterity >= 8	two-handed Blade
+2	Strength >= 10	Dexterity >= 8	Spear
+2	Strength >= 12	Dexterity >= 6	Halberd
+1	Dexterity >= 6	Dagger
+2	Strength >= 6	Dexterity >= 6	Short sword
+2	Strength >= 8	Dexterity >= 6	Throwing Axe
+2	Strength >= 4	Dexterity >= 8	Throwing Dagger
+2	Strength >= 4	Dexterity >= 7	Throwing Dart
+2	Strength >= 10	Dexterity >= 10	Javalin
+2	Strength >= 4	Dexterity >= 8	Throwing Knife
+2	Strength >= 6	Dexterity >= 4	Throwing Stone

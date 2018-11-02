@@ -1,0 +1,460 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+//************************************************************************
+//imports
+
+
+//************************************************************************
+
+public class ItemBasics {
+
+  /* The purpose of this class is to hold many of an item's basic details.
+   * in a file and dynamically transfer them to the individual classes.
+   */
+
+//************************************************************************
+// static declarations
+//************************************************************************
+
+  static ItemBasics[] itemBasics = createItemBasicsFromFile();
+
+//************************************************************************
+// member declarations
+//************************************************************************
+
+  // Note: Not all items will use all the details, but there needs to be
+  // a tab for it anyway, for consistancy and simplicity
+
+  // the name is a simple string that will be used to identify the details
+  // of an item. *NOTE: this must be the same as Item.getName()
+  private String name;
+
+  // start with general class Item variables:
+  // there is only one at this point, but future should allow for a random pick
+  // of all the possible item pictures from a category. Perhaps in the fileNames class?
+  private String imageName;
+
+  private int value,
+              weight,
+              castingFailure,
+              chanceToBreak; // out of 10,000 (100ths of a percent)
+
+  private boolean stackable,
+                  cursed,
+                  magical,
+                  identified,
+                  unique,
+                  essential;
+
+ // now add in specific variables for armor
+
+  private int equipmentDefense,
+              maxDexBonus;
+
+ // now add in specific variables for weapons
+  private boolean twoHanded;
+  private int     speed;
+  private int     attackType; // must be one of three Weapon statics
+  private boolean crushing,
+                  slashing,
+                  piercing;
+  private int     dmgDieNum;   // this is the X in XdY + Z
+  private int     dmgDieSides; // this is the Y in XdY + Z
+  private int     dmgAddition; // this is the Z in XdY + Z
+
+  private String governingProficiency; // corresponds to livingObject levels
+
+  // now add in specific variables for ammo
+  // ? - something about chance to lose ammo?
+
+  // now add in specific variables for launcher (dmg, att bonus?)
+  // ? - something about which item type used for ammo?
+
+  // now add in specific variables for other specific items.
+  // ? - artifact details?
+
+  // now add all possible requirements
+  int             reqNum;
+  Requirement[]   requirements;
+
+//************************************************************************
+// constructors
+//************************************************************************
+
+  public ItemBasics (){} // end default constructor
+
+  public ItemBasics (String s) {
+    // the purpose of this constructor is to go through the passed string
+    // and parse off all the item's details.
+    // then store it into the correct item type's class.
+
+    // go through the fields of this line and capture the variables.
+/*
+    <variable> = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    <boolean> = Boolean.valueOf(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    <String> = MyTextIO.getNextPhrase(s);
+    s = MyTextIO.trimPhrase(s);
+
+    <Requirement> = new Requirement(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+*/
+
+//  Popup.createInfoPopup("Making new ItemBasics from string:" + MyTextIO.newline + s);
+
+    value = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    weight = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    castingFailure = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    chanceToBreak = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    stackable = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    identified = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    magical = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    unique = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    essential = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    cursed = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    equipmentDefense = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    maxDexBonus = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    twoHanded = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    speed = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    attackType = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    crushing = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    slashing = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    piercing = (Boolean.valueOf(MyTextIO.getNextPhrase(s))).booleanValue();
+    s = MyTextIO.trimPhrase(s);
+
+    dmgDieNum = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    dmgDieSides = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    dmgAddition = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    governingProficiency = MyTextIO.getNextPhrase(s);
+    s = MyTextIO.trimPhrase(s);
+
+    // at this point, we know there are a few lines left, but we don't know how
+    // many requirements are associated with this item, so we need to read the reqNum.
+
+    reqNum = Integer.parseInt(MyTextIO.getNextPhrase(s));
+    s = MyTextIO.trimPhrase(s);
+
+    // now that we know how many reqs there are, we can make an array and read them in.
+    requirements = new Requirement[reqNum];
+
+    // so, for the length of the requirements, read in the next phrase (requirement)
+    for (int i = 0; i < requirements.length; i++){
+      // for each requirement, read it in and create one.
+      requirements[i] = new Requirement(MyTextIO.getNextPhrase(s));
+      s = MyTextIO.trimPhrase(s);
+    } // end for loop
+
+    // now we are done with the requirements, so we can finish the other lines.
+    name = MyTextIO.getNextPhrase(s);
+    s = MyTextIO.trimPhrase(s);
+
+    imageName = MyTextIO.getNextPhrase(s);
+    s = MyTextIO.trimPhrase(s);
+
+  } // end constructor by fileLine
+
+  public ItemBasics(ItemBasics source){
+    // purpose of this constructor is to create a copy to be used and changed
+    // by unique items.
+
+    // basically, go through all the fields, and save a copy.
+
+    setValue            (source.getValue());
+    setWeight           (source.getWeight());
+    setCastingFailure   (source.getCastingFailure());
+    setChanceToBreak    (source.getChanceToBreak());
+    setStackable        (source.isStackable());
+    setIdentified       (source.isIdentified());
+    setMagic            (source.isMagic());
+    setUnique           (source.isUnique());
+    setEssential        (source.isEssential());
+    setCursed           (source.isCursed());
+    setEquipmentDefense (source.getEquipmentDefense());
+    setMaxDexBonus      (source.getMaxDexBonus());
+    setTwoHanded        (source.isTwoHanded());
+    setSpeed            (source.getSpeed());
+    setAttackType       (source.getAttackType());
+    setCrushing         (source.doesCrushing());
+    setSlashing         (source.doesSlashing());
+    setPiercing         (source.doesPiercing());
+    setDmgDieNum        (source.getDmgDieNum());
+    setDmgDieSides      (source.getDmgDieSides());
+    setDmgAddition      (source.getDmgAddition());
+    setReqNum           (source.getReqNum());
+    setName             (source.getName());
+    setImageName        (source.getImageName());
+
+    setGoverningProficiency (source.getGoverningProficiency());
+    setReqNum           (source.getReqNum());
+
+    requirements = new Requirement[source.getReqNum()];
+
+    // now, we need to create new requirements from the ones already present.
+
+    for (int i = 0; i < requirements.length; i++){
+      // for each requirement, we need to create a new one,
+      // copied from the source.
+      requirements[i] = new Requirement(source.requirements[i]);
+    } // end for loop
+
+    Requirement[]   requirements;
+  } // end copy constructor
+
+//************************************************************************
+// public methods
+//************************************************************************
+
+//************************************************************************
+// package methods
+//************************************************************************
+  int         getValue            () {return value;}
+  int         getWeight           () {return weight;}
+  int         getCastingFailure   () {return castingFailure;}
+  int         getChanceToBreak    () {return chanceToBreak;}
+  boolean     isStackable         () {return stackable;}
+  boolean     isIdentified        () {return identified;}
+  boolean     isMagic             () {return magical;}
+  boolean     isUnique            () {return unique;}
+  boolean     isEssential         () {return essential;}
+  boolean     isCursed            () {return cursed;}
+  int         getEquipmentDefense () {return equipmentDefense;}
+  int         getMaxDexBonus      () {return maxDexBonus;}
+  boolean     isTwoHanded         () {return twoHanded;}
+  int         getSpeed            () {return speed;}
+  int         getAttackType       () {return attackType;}
+  boolean     doesCrushing        () {return crushing;}
+  boolean     doesSlashing        () {return slashing;}
+  boolean     doesPiercing        () {return piercing;}
+  int         getDmgDieNum        () {return dmgDieNum;}
+  int         getDmgDieSides      () {return dmgDieSides;}
+  int         getDmgAddition      () {return dmgAddition;}
+  int         getReqNum           () {return reqNum;}
+  String      getName             () {return name;}
+  String      getImageName        () {return imageName;}
+
+  String      getGoverningProficiency(){return governingProficiency;}
+
+  void setValue            (int i)    {value            = i;}
+  void setWeight           (int i)    {weight           = i;}
+  void setCastingFailure   (int i)    {castingFailure   = i;}
+  void setChanceToBreak    (int i)    {chanceToBreak    = i;}
+  void setStackable        (boolean b){stackable        = b;}
+  void setIdentified       (boolean b){identified       = b;}
+  void setMagic            (boolean b){magical          = b;}
+  void setUnique           (boolean b){unique           = b;}
+  void setEssential        (boolean b){essential        = b;}
+  void setCursed           (boolean b){cursed           = b;}
+  void setEquipmentDefense (int i)    {equipmentDefense = i;}
+  void setMaxDexBonus      (int i)    {maxDexBonus      = i;}
+  void setTwoHanded        (boolean b){twoHanded        = b;}
+  void setSpeed            (int i)    {speed            = i;}
+  void setAttackType       (int i)    {attackType       = i;}
+  void setCrushing         (boolean b){crushing         = b;}
+  void setSlashing         (boolean b){slashing         = b;}
+  void setPiercing         (boolean b){piercing         = b;}
+  void setDmgDieNum        (int i)    {dmgDieNum        = i;}
+  void setDmgDieSides      (int i)    {dmgDieSides      = i;}
+  void setDmgAddition      (int i)    {dmgAddition      = i;}
+  void setReqNum           (int i)    {reqNum           = i;}
+  void setName             (String s) {name             = s;}
+  void setImageName        (String s) {imageName        = s;}
+
+  void setGoverningProficiency (String s) {governingProficiency = s;}
+
+//************************************************************************
+// private methods
+//************************************************************************
+
+
+//************************************************************************
+// Static methods
+//************************************************************************
+
+  static ItemBasics getBasicsForType(int type){
+    // unfortunately, we have to do this the long way because we have unique
+    // classes within this, so we need to essentially do a deep copy of our array.
+
+    // first we need to find which one in our array is the one we want,
+
+    for (int i = 0; i < itemBasics.length; i++){
+      if (Item.getTypeName(type).equalsIgnoreCase(itemBasics[i].getName()))
+        return new ItemBasics(itemBasics[i]);
+    } // end for loop
+
+    Popup.createWarningPopup("Type not found, returning null"
+                             + MyTextIO.newline
+                             + "Attempted to find basics for type: "
+                             + type + ", " + Item.getTypeName(type));
+    return null;
+  } // end constructor by type
+
+//************************************************************************
+  static ItemBasics[] createItemBasicsFromFile(){
+    // purpose of this method is to be called only once,
+    // loading all itemBasics for the game from a file.
+    // this allows for external editing of the content of the game.
+
+    try{
+      itemBasics = new ItemBasics[MyTextIO.getNumLines(FileNames.ITEM_BASICS) - 2]; // -2 for the title row and index 0.
+
+      BufferedReader br = new BufferedReader(new FileReader(FileNames.ITEM_BASICS));
+      // now that we know it exists
+      // remove the title line
+      br.readLine();
+
+      // and read in new materials into static array.
+      for (int i = 0; i < itemBasics.length; i++){
+        // for each material in the array
+        itemBasics[i] = new ItemBasics(br.readLine());
+        saveBasicsToStaticItemClass(itemBasics[i]);
+      } // end for loop
+
+      br.close();
+      return itemBasics;
+    } // end try
+
+    catch(FileNotFoundException e){
+      Popup.createErrorPopup("ItemBasics File not found"
+                            + MyTextIO.newline
+                            + "'" + FileNames.ITEM_BASICS + "'");
+      return null;
+    } // end catch
+
+    catch(IOException evt){
+      Popup.createErrorPopup("IO error when reading from ItemBasics File."
+                            + MyTextIO.newline
+                            + "'" + FileNames.ITEM_BASICS + "'");
+      return null;
+    } // end catch
+
+    catch(Exception e){
+      Popup.createErrorPopup("Unknown Exception caught:" + e.getMessage());
+      return null;
+    } // end cause
+
+  } // end createQualitiesFromFile()
+
+//************************************************************************
+  static void saveBasicsToStaticItemClass(ItemBasics i){
+   // store the array of requirements to the static item variables in the class of the given item name.
+        if      (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AMMO_ARROW)))         Ammo.BASICS_ARROW         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AMMO_BOLT)))          Ammo.BASICS_BOLT          = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AMMO_BULLET)))        Ammo.BASICS_BULLET        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AMULET)))             Amulet.BASICS_AMULET      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.ARTIFACT)))           Artifact.BASICS_ARTIFACT  = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.ARMS_GLOVES)))        Arms.BASICS_GLOVES        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.ARMS_GAUNTLETS)))     Arms.BASICS_GAUNTLETS     = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.ARMS_BRACERS)))       Arms.BASICS_BRACERS       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AXE_SMALL)))          Axe.BASICS_SMALL          = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AXE_MEDIUM)))         Axe.BASICS_MEDIUM         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AXE_LARGE)))          Axe.BASICS_LARGE          = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.AXE_MASSIVE)))        Axe.BASICS_MASSIVE        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BELT_LIGHT)))         Belt.BASICS_LIGHT         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BELT_HEAVY)))         Belt.BASICS_HEAVY         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BLUNT_CLUB)))         Blunt.BASICS_CLUB         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BLUNT_MACE)))         Blunt.BASICS_MACE         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BLUNT_HAMMER)))       Blunt.BASICS_HAMMER       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BLUNT_MAUL)))         Blunt.BASICS_MAUL         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BLUNT_STAFF)))        Blunt.BASICS_STAFF        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BOOK)))               Book.BASICS_BOOK          = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BOOTS_SOFT)))         Boots.BASICS_SOFT         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BOOTS_HARD)))         Boots.BASICS_HARD         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.BOOTS_GREAVES)))      Boots.BASICS_GREAVES      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.CLOAK)))              Cloak.BASICS_CLOAK        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.CUIRASS_ROBE)))       Cuirass.BASICS_ROBE       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.CUIRASS_LIGHT)))      Cuirass.BASICS_LIGHT      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.CUIRASS_MEDIUM)))     Cuirass.BASICS_MEDIUM     = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.CUIRASS_HEAVY)))      Cuirass.BASICS_HEAVY      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.GEM)))                Gem.BASICS_GEM            = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.GOLD)))               Gold.BASICS_GOLD          = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HAND2HAND_FIST)))     Hand2Hand.BASICS_FIST     = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HAND2HAND_KNUCKLES))) Hand2Hand.BASICS_KNUCKLES = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HAND2HAND_CLAWS)))    Hand2Hand.BASICS_CLAWS    = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HAND2HAND_DAGGER)))   Hand2Hand.BASICS_DAGGER   = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HELMET_NORMAL)))      Helmet.BASICS_HELM        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HELMET_BEAST)))       Helmet.BASICS_BEAST       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HELMET_CIRCLET)))     Helmet.BASICS_CIRCLET     = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.HELMET_HOOD)))        Helmet.BASICS_HOOD        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LAUNCHER_BOW_SHORT))) Launcher.BASICS_BOW_SHORT = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LAUNCHER_BOW_LONG)))  Launcher.BASICS_BOW_LONG  = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LAUNCHER_BOW_COMPOSITE)))  Launcher.BASICS_BOW_COMPOSITE  = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LAUNCHER_CROSSBOW_LIGHT))) Launcher.BASICS_CROSSBOW_LIGHT = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LAUNCHER_CROSSBOW_HEAVY))) Launcher.BASICS_CROSSBOW_HEAVY = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LAUNCHER_SLING)))     Launcher.BASICS_SLING     = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LONG_BLADE_STRAIGHT)))LongBlade.BASICS_STRAIGHT = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LONG_BLADE_CURVED)))  LongBlade.BASICS_CURVED   = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.LONG_BLADE_2H)))      LongBlade.BASICS_2HANDED  = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.POLEARM_SPEAR)))      PoleArm.BASICS_SPEAR      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.POLEARM_HALBERD)))    PoleArm.BASICS_HALBERD    = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.POTION)))             Potion.BASICS_POTION      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.RING)))               Ring.BASICS_RING          = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SCROLL)))             Scroll.BASICS_SCROLL      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SHIELD_BUCKLER)))     Shield.BASICS_BUCKLER     = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SHIELD_ROUND)))       Shield.BASICS_ROUND       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SHIELD_MEDIUM)))      Shield.BASICS_MEDIUM      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SHIELD_TOWER)))       Shield.BASICS_TOWER       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SHORT_BLADE_SHORT)))  ShortBlade.BASICS_SHORT   = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SHORT_BLADE_DAGGER))) ShortBlade.BASICS_DAGGER  = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SPIKED_FLAIL)))       Spiked.BASICS_FLAIL       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.SPIKED_STAR)))        Spiked.BASICS_STAR        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.THROWN_AXE)))         Thrown.BASICS_AXE         = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.THROWN_DAGGER)))      Thrown.BASICS_DAGGER      = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.THROWN_DART)))        Thrown.BASICS_DART        = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.THROWN_KNIFE)))       Thrown.BASICS_KNIFE       = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.THROWN_JAVELIN)))     Thrown.BASICS_JAVELIN     = i;
+        else if (i.getName().equalsIgnoreCase(Item.getTypeName(Item.THROWN_STONE)))       Thrown.BASICS_STONE       = i;
+        else {
+          Popup.createInfoPopup("Item name not found: '" + i.getName() + "'");
+        } // end else
+
+  } // end saveBasicsToStaticItemClass
+
+
+//************************************************************************
+} // end class ItemBasics
+//************************************************************************

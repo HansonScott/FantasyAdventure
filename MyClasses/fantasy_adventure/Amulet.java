@@ -1,0 +1,90 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+//***************************************************************
+
+class Amulet extends Loot {
+
+  static ItemBasics BASICS_AMULET;
+
+//***************************************************************
+  public Amulet(){}
+
+  public Amulet(int type){
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcAmuletStats();
+    updateDetails();
+  } // end constructor
+
+//***************************************************************
+  public static Item generateRandomAmulet() {
+    Amulet thisItem = new Amulet(Item.AMULET);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.getQualityFromName("Good"));
+    thisItem.calcAmuletStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomAmulet()
+
+//******************************************************************************
+  void writeToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+
+    super.writeToFile(bw);
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//******************************************************************************
+  static Amulet readFromFile (int type, BufferedReader br) throws IOException{
+
+    // now we can read our details onto the line...
+
+    Amulet thisItem = new Amulet();
+    thisItem.readFromFile(br); // super
+
+    // now we can read our details onto the line...
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//***************************************************************
+  private void calcAmuletStats(){
+
+    // purpose of this method is to use the quality and material
+    // to calculate the specific stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    setInventoryIcon(BASICS_AMULET.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_AMULET.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()) * getQuantity());
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_AMULET.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_AMULET.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      setWeight(
+        Formulas.calcItemStat(BASICS_AMULET.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()) * getQuantity());
+
+    basics.setName("" + getMaterial().getName() + " " + Item.getTypeName(Item.AMULET));
+  } // end calcAmuletStats
+
+} // end class Amulet

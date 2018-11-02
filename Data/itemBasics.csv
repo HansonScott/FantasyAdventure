@@ -1,0 +1,67 @@
+value	Weight	CstFl	brake	stack	idntfd	magic	unique	esntl	crsd	EqDef	MxDxBns	2H	Wpnspd	attType	crsh	slsh	pierce	dmgX	dmgY	dmgZ	GovProf	req#	req1	req2	req3	Item Name	Image Name
+100	1	0	5	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	0	Artifact	Images/items/artifact01.jpg			
+100	1	0	5	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	0	Book	Images/items/book01.jpg			
+50	0	0	1	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	0	Ring	Images/items/ring01.jpg			
+75	0	0	1	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	0	Amulet	Images/items/amulet01.jpg			
+25	0	0	0	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	0	Gem	Images/items/gem01.jpg			
+1	0	0	0	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	0	Gold	Images/items/gold.jpg			
+100	1	0	1	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	0	Potion	Images/items/potion01.jpg			
+75	1	0	1	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	1	Intelligence >= 10	Scroll	Images/items/scroll01.jpg		
+1	0	0	50	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	2	FALSE	FALSE	TRUE	1	6	0	Launcher Class Weapons	0	Arrow	Images/items/ammo_arrow01.jpg			
+1	0	0	35	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	6	2	FALSE	FALSE	TRUE	2	4	0	Launcher Class Weapons	0	Bolt	Images/items/ammo_bolt01.jpg			
+1	0	0	10	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	2	TRUE	FALSE	FALSE	1	4	2	Launcher Class Weapons	0	Bullet	Images/items/ammo_bullet01.jpg			
+50	8	1	1	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	1	8	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	1	Constitution >= 4	Robe	Images/items/cuirass_robe01.jpg		
+30	6	1	1	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	1	6	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	1	Constitution >= 4	Cloak	Images/items/cloak01.jpg		
+225	10	15	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	4	1	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Heavy Armor Proficiency	2	Strength >= 12	Constitution >= 11	Normal Helmet	Images/items/helmet_normal01.jpg	
+125	6	5	6	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	1	3	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Light Armor Proficiency	2	Strength >= 6	Constitution >= 4	Circlet	Images/items/helmet_circlet01.jpg	
+175	8	10	15	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	2	2	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Medium Armor Proficiency	2	Strength >= 10	Constitution >= 10	Beast Head	Images/items/helmet_beast01.jpg	
+75	2	1	3	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	6	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Unarmored Proficiency	2	Strength >= 6	Constitution >= 6	Hood	Images/items/helmet_hood01.jpg	
+200	20	15	15	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	3	5	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Light Armor Proficiency	2	Strength >= 8	Constitution >= 8	Light Armor	Images/items/cuirass_light01.jpg	
+400	35	25	9	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	6	3	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Medium Armor Proficiency	2	Strength >= 11	Constitution >= 10	Medium Armor	Images/items/cuirass_medium01.jpg	
+800	50	40	4	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	9	1	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Heavy Armor Proficiency	2	Strength >= 14	Constitution >= 12	Heavy Armor	Images/items/cuirass_heavy01.jpg	
+75	5	10	20	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	1	5	FALSE	4	0	FALSE	FALSE	FALSE	0	0	0	Shield Proficiency	3	Strength >= 6	Dexterity >= 12	Constitution >= 6	Buckler	Images/items/shield_buckler01.jpg
+150	12	15	15	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	2	3	FALSE	4	0	FALSE	FALSE	FALSE	0	0	0	Shield Proficiency	3	Strength >= 8	Dexterity >= 10	Constitution >= 8	Round shield	Images/items/shield_round01.jpg
+250	20	25	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	3	2	FALSE	4	0	FALSE	FALSE	FALSE	0	0	0	Shield Proficiency	3	Strength >= 11	Dexterity >= 9	Constitution >= 10	Medium Shield	Images/items/shield_medium01.jpg
+400	30	40	5	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	4	1	FALSE	4	0	FALSE	FALSE	FALSE	0	0	0	Shield Proficiency	3	Strength >= 14	Dexterity >= 8	Constitution >= 12	Tower Shield	Images/items/shield_tower01.jpg
+100	2	7	8	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	2	3	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Medium Armor Proficiency	3	Strength >= 9	Dexterity >= 10	Constitution >= 9	Bracers	Images/items/arms_bracers01.jpg
+150	4	15	12	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	4	1	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Heavy Armor Proficiency	3	Strength >= 12	Dexterity >= 6	Constitution >= 10	Gauntlets	Images/items/arms_gauntlets01.jpg
+50	1	3	16	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	1	5	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Light Armor Proficiency	3	Strength >= 4	Dexterity >= 8	Constitution >= 6	Gloves	Images/items/arms_gloves01.jpg
+35	1	1	20	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	1	5	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Light Armor Proficiency	3	Strength >= 4	Dexterity >= 8	Constitution >= 4	Soft Boots	Images/items/boots_soft01.jpg
+65	3	3	14	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	2	3	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Medium Armor Proficiency	3	Strength >= 8	Dexterity >= 7	Constitution >= 6	Hard Boots	Images/items/boots_hard01.jpg
+110	5	8	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	4	1	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Heavy Armor Proficiency	3	Strength >= 12	Dexterity >= 6	Constitution >= 9	Greaves	Images/items/boots_greaves01.jpg
+75	2	4	6	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	1	4	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Light Armor Proficiency	3	Strength >= 7	Dexterity >= 6	Constitution >= 8	Light Belt	Images/items/belt_light01.jpg
+150	5	12	4	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	2	2	FALSE	4	1	FALSE	FALSE	FALSE	0	0	0	Heavy Armor Proficiency	3	Strength >= 10	Dexterity >= 6	Constitution >= 10	Heavy Belt	Images/items/belt_heavy01.jpg
+75	3	3	8	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	0	FALSE	TRUE	FALSE	1	4	1	Axe Class Weapons	2	Strength >= 6	Dexterity >= 6	Small Axe	Images/items/axe_small01.jpg	
+125	5	5	9	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	0	FALSE	TRUE	FALSE	1	6	0	Axe Class Weapons	2	Strength >= 8	Dexterity >= 7	Medium Axe	Images/items/axe_medium01.jpg	
+200	9	9	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	6	0	TRUE	TRUE	FALSE	2	3	2	Axe Class Weapons	2	Strength >= 10	Dexterity >= 8	Large Axe	Images/items/axe_large01.jpg	
+300	15	14	12	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	8	0	TRUE	TRUE	FALSE	2	5	0	Axe Class Weapons	2	Strength >= 13	Dexterity >= 9	Massive Axe	Images/items/axe_massive01.jpg	
+30	5	0	20	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	0	TRUE	FALSE	FALSE	1	4	2	Blunt Class Weapons	2	Strength >= 6	Dexterity >= 4	Club	Images/items/blunt_club01.jpg	
+45	8	2	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	0	TRUE	FALSE	FALSE	2	3	0	Blunt Class Weapons	2	Strength >= 5	Dexterity >= 5	Hammer	Images/items/blunt_hammer01.jpg	
+55	10	5	12	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	6	0	TRUE	FALSE	FALSE	2	4	0	Blunt Class Weapons	2	Strength >= 5	Dexterity >= 5	Mace	Images/items/blunt_mace01.jpg	
+185	20	7	18	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	8	0	TRUE	FALSE	FALSE	2	5	0	Blunt Class Weapons	2	Strength >= 13	Dexterity >= 7	Maul	Images/items/blunt_maul01.jpg	
+75	8	0	8	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	4	0	TRUE	FALSE	FALSE	1	6	2	Blunt Class Weapons	2	Strength >= 5	Dexterity >= 7	Staff	Images/items/blunt_staff01.jpg	
+135	10	8	25	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	8	0	TRUE	FALSE	TRUE	1	8	2	Spiked Class Weapons	3	Strength >= 6	Dexterity >= 10	Intelligence >= 6	Flail	Images/items/spiked_flail01.jpg
+95	7	3	12	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	6	0	TRUE	FALSE	TRUE	2	3	2	Spiked Class Weapons	2	Strength >= 6	Dexterity >= 6	Morning Star	Images/items/spiked_star01.jpg	
+200	0	0	0	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	0	0	TRUE	TRUE	TRUE	1	3	1	Hand to Hand Class Weapons	0	Fist	Images/items/hand2hand_fist01.jpg			
+30	1	2	1	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	0	TRUE	FALSE	FALSE	1	4	2	Hand to Hand Class Weapons	2	Strength >= 5	Dexterity >= 6	Knuckles	Images/items/hand2hand_knuckles01.jpg	
+65	3	8	15	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	0	FALSE	TRUE	FALSE	1	8	0	Hand to Hand Class Weapons	2	Strength >= 5	Dexterity >= 12	Claws	Images/items/hand2hand_claws01.jpg	
+35	2	3	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	0	FALSE	FALSE	TRUE	1	6	0	Hand to Hand Class Weapons	2	Strength >= 5	Dexterity >= 10	Punch Dagger	Images/items/hand2hand_dagger01.jpg	
+125	4	2	2	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	2	2	FALSE	FALSE	FALSE	0	0	0	Launcher Class Weapons	3	Strength >= 6	Dexterity >= 10	Intelligence >= 7	Short Bow	Images/items/launcher_bow01.jpg
+150	8	4	3	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	4	2	FALSE	FALSE	FALSE	0	1	1	Launcher Class Weapons	3	Strength >= 8	Dexterity >= 12	Intelligence >= 8	Long Bow	Images/items/launcher_bow01.jpg
+175	12	6	5	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	7	2	FALSE	FALSE	FALSE	0	1	2	Launcher Class Weapons	3	Strength >= 8	Dexterity >= 13	Intelligence >= 9	Composite Bow	Images/items/launcher_bow01.jpg
+200	8	6	12	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	5	2	FALSE	FALSE	FALSE	0	0	1	Launcher Class Weapons	3	Strength >= 5	Dexterity >= 11	Intelligence >= 10	Light Crossbow	Images/items/launcher_crossbow01.jpg
+250	14	10	16	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	9	2	FALSE	FALSE	FALSE	0	1	2	Launcher Class Weapons	3	Strength >= 5	Dexterity >= 11	Intelligence >= 10	Heavy Crossbow	Images/items/launcher_crossbow01.jpg
+60	1	1	3	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	0	2	FALSE	FALSE	FALSE	0	0	0	Launcher Class Weapons	3	Strength >= 6	Dexterity >= 10	Intelligence >= 6	Sling	Images/items/launcher_sling01.jpg
+225	8	10	8	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	0	FALSE	TRUE	TRUE	1	8	0	Long Blade Class Weapons	2	Strength >= 9	Dexterity >= 10	Straight Long Blade	Images/items/long_blade_straight01.jpg	
+185	6	6	6	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	0	FALSE	TRUE	FALSE	1	6	1	Long Blade Class Weapons	2	Strength >= 6	Dexterity >= 12	Curved Long Blade	Images/items/long_blade_curved01.jpg	
+250	15	18	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	8	0	TRUE	TRUE	FALSE	2	4	2	Long Blade Class Weapons	2	Strength >= 12	Dexterity >= 8	Two-handed Blade	Images/items/long_blade_2handed01.jpg	
+190	15	8	10	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	4	0	FALSE	TRUE	TRUE	1	6	2	Polearm Class Weapons	2	Strength >= 10	Dexterity >= 8	Spear	Images/items/polearm_spear01.jpg	
+260	25	16	14	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	TRUE	8	0	TRUE	TRUE	FALSE	2	5	0	Polearm Class Weapons	2	Strength >= 12	Dexterity >= 6	Halberd	Images/items/polearm_halberd01.jpg	
+5	1	1	8	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	0	FALSE	FALSE	TRUE	1	3	0	Short Blade Class Weapons	1	Dexterity >= 5	Dagger	Images/items/short_blade_dagger01.jpg		
+40	3	8	6	FALSE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	0	FALSE	TRUE	FALSE	1	4	2	Short Blade Class Weapons	2	Strength >= 6	Dexterity >= 6	Short Sword	Images/items/short_blade_short01.jpg	
+5	2	4	3	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	TRUE	FALSE	TRUE	1	3	3	Thrown Class Weapons	3	Strength >= 8	Dexterity >= 6	Intelligence >= 6	Throwing Axe	Images/items/thrown_axe01.jpg
+3	1	3	2	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	1	FALSE	FALSE	TRUE	1	3	1	Thrown Class Weapons	3	Strength >= 4	Dexterity >= 8	Intelligence >= 6	Throwing Dagger	Images/items/thrown_dagger01.jpg
+3	1	1	2	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	0	1	FALSE	FALSE	TRUE	1	4	0	Thrown Class Weapons	3	Strength >= 4	Dexterity >= 7	Intelligence >= 6	Throwing Dart	Images/items/thrown_dart01.jpg
+15	2	7	8	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	8	1	TRUE	FALSE	TRUE	1	10	0	Thrown Class Weapons	3	Strength >= 10	Dexterity >= 10	Intelligence >= 8	Javelin	Images/items/thrown_javelin01.jpg
+3	1	2	2	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	2	1	FALSE	TRUE	TRUE	1	3	1	Thrown Class Weapons	3	Strength >= 4	Dexterity >= 8	Intelligence >= 6	Throwing Knife	Images/items/thrown_knife01.jpg
+2	2	0	1	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	0	15	FALSE	4	1	TRUE	FALSE	FALSE	2	2	2	Thrown Class Weapons	2	Strength >= 6	Dexterity >= 4	Throwing Stone	Images/items/thrown_stone01.jpg	

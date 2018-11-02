@@ -1,0 +1,1 @@
+This is your character's primary choice of equipment color for clothes, weapons, armor, etc.  This will also be the text color in the feedback panel.

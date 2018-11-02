@@ -1,0 +1,149 @@
+package fantasy_adventure;
+
+class Names {
+
+  /* the purpose of this class is to offer static methods of creating and returning names
+   * to the user from predetermined or generated lists.
+   * Because the process differs between the information available by race, the methods
+   * vary and must be called specifically for each race, making things easier to code.
+   */
+
+// declarations
+static String human_m_firstnames[];
+static String human_m_lastames[];
+static String human_f_firstnames[];
+static String human_f_lastames[];
+
+static String first;
+static String last;
+
+//******************************************************************************
+// package methods
+//******************************************************************************
+
+  static String getHumanName(String gender){
+    /* purpose of this method is to create and return a human name that fits the gender passed.
+     * 1) for both the first and the last name, we will need to do these steps:
+     * 2) get random first and last names, combine the result, and return with a space between.
+     */
+
+    if (gender.equalsIgnoreCase("Male")){
+      first = MyTextIO.getRandomLineFromFile(FileNames.HUMAN_MALE_FIRST_NAMES);
+    } // end male
+
+    else if (gender.equalsIgnoreCase("Female")){
+      first = MyTextIO.getRandomLineFromFile(FileNames.HUMAN_FEMALE_FIRST_NAMES);
+    } // end female
+
+    else{ // gender unknown
+      Popup.createErrorPopup("</html>Gender unknown when trying to generate Human name, <br>Using default.</html>");
+      first = "Joseph";
+    } // end else
+
+      last  = MyTextIO.getRandomLineFromFile(FileNames.HUMAN_LAST_NAMES);
+
+    return (MyTextIO.makeInitialCaps(first) + " " + MyTextIO.makeInitialCaps(last));
+  } // end human
+
+//******************************************************************************
+
+  static String getElfName(String gender){
+    /* the purpose of this method is to create an Elven name and return it.
+     * Elven first names are created by combining a prefix with 1 or more suffixes.
+     * So, we need to do the following:
+     * - get the list of prfixes and suffixes
+     * - randomly generate number of Suffixes, D4 (name 2-5 syllables)
+     * - pick a random suffix
+     * - loop number of suffixes and append suffix to name.
+     * - Once we have the first name, then we can add a family line, or last name.
+     * - get a random linking word from the list
+     * - generate another name and add as last name.
+     * - return result.
+     */
+
+     return (makeElfName() + " " + getLinkingPhrase() + " " + makeElfName());
+   } // end getElfName
+
+//*******************
+   static private String makeElfName(){
+
+     // - pick a random prefix
+     String tempName = MyTextIO.getRandomLineFromFile(FileNames.ELF_PREFIXES);
+
+     // - randomly generate number of Suffixes, D2 (name 2-3 syllables)
+     int numSuffixes = Roll.D2();
+     // - loop number of suffixes and append suffix to name.
+     for (int i = 0; i < numSuffixes; i++){
+       // for each iteration of the loop, we need to add a suffix to the name.
+       tempName += MyTextIO.getRandomLineFromFile(FileNames.ELF_SUFFIXES);
+     } // end for loop
+     return MyTextIO.makeInitialCaps(tempName);
+   } // end makeElfName()
+
+//*******************
+   static private String getLinkingPhrase(){
+     // we need to simply get a random line from the linkingPhrase file.
+     return MyTextIO.getRandomLineFromFile(FileNames.ELF_LINKING_PHRASE);
+   } // end getLinkingPhrase()
+
+//******************************************************************************
+
+  static String getDwarfName(String gender){
+    /* purpose of this method is to create and return a Dwarven name.
+     * 1) for both the first and the last name, we will need to do these steps:
+     * 2) get random first and last names, combine the result, and return with a space between.
+     */
+
+    first = MyTextIO.getRandomLineFromFile(FileNames.DWARF_FIRST_NAMES);
+    last  = MyTextIO.getRandomLineFromFile(FileNames.DWARF_LAST_NAMES);
+    return (MyTextIO.makeInitialCaps(first) + " " + MyTextIO.makeInitialCaps(last));
+  } // end human
+
+//******************************************************************************
+
+  static String getGnomeName(String gender){
+    /* Gnome names are made by combining a prefix, a suffix, and a clan
+     * all into the same word. No spaces.
+     * there is, however, a gender difference in the clan ending, so that needs
+     * to be taken into consideration.
+     */
+    String tempName  = MyTextIO.getRandomLineFromFile(FileNames.GNOME_PREFIXES);
+    tempName        += MyTextIO.getRandomLineFromFile(FileNames.GNOME_SUFFIXES);
+
+    if (gender      == "Female")
+    tempName        += MyTextIO.getRandomLineFromFile(FileNames.GNOME_F_CLAN);
+    else {//(gender == "Male")
+    tempName        += MyTextIO.getRandomLineFromFile(FileNames.GNOME_M_CLAN);}
+
+    return MyTextIO.makeInitialCaps(tempName);
+  } // end human
+
+//******************************************************************************
+
+  static String getHalflingName(String gender){
+    // Halfling names are composed of a gender specific first name,
+    // and a generic last name.
+
+    String tempName;
+    if (gender == "Male")
+      tempName = MyTextIO.makeInitialCaps(MyTextIO.getRandomLineFromFile(FileNames.HALFLING_M_FIRSTNAMES));
+    else{ // gender == "Female")
+      tempName = MyTextIO.makeInitialCaps(MyTextIO.getRandomLineFromFile(FileNames.HALFLING_F_FIRSTNAMES));}
+
+    tempName += " " + MyTextIO.makeInitialCaps(MyTextIO.getRandomLineFromFile(FileNames.HALFLING_LAST_PREFIXES))
+                    + MyTextIO.getRandomLineFromFile(FileNames.HALFLING_LAST_SUFFIXES);
+
+    return tempName;
+  } // end human
+
+//******************************************************************************
+
+  static String getHalfOrcName(String gender){
+    return MyTextIO.makeInitialCaps(MyTextIO.getRandomLineFromFile(FileNames.HALFORC_NAMES));
+  } // end human
+
+//*******************************************************************************
+// private methods
+//*******************************************************************************
+
+} // end class Names

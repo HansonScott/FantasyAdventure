@@ -1,0 +1,47 @@
+package fantasy_adventure;
+
+//*****************************************************************************
+// imports
+//*****************************************************************************
+import java.io.*;
+import java.util.*;
+import java.awt.*;
+
+//*****************************************************************************
+public class ObjectCloner
+{
+ // so that nobody can accidentally create an ObjectCloner object
+ private ObjectCloner(){} // end constructor
+
+//*****************************************************************************
+// static methods
+//*****************************************************************************
+ static public Object deepCopy(Object oldObj) throws Exception{
+   // returns a deep copy of an object
+   ObjectOutputStream oos = null;
+   ObjectInputStream ois = null;
+   try{
+     ByteArrayOutputStream bos = new ByteArrayOutputStream();
+     oos = new ObjectOutputStream(bos);
+
+     // serialize and pass the object
+     oos.writeObject(oldObj);
+     oos.flush();
+     ByteArrayInputStream bin = new ByteArrayInputStream(bos.toByteArray());
+     ois = new ObjectInputStream(bin);
+
+     // return the new object
+     return ois.readObject(); // G
+   } // end try
+
+   catch(Exception e){
+     System.out.println("Exception in ObjectCloner = " + e);
+     throw(e);
+   } // end catch
+   finally{
+     oos.close();
+     ois.close();
+   } // end finally
+ } // end deepCopy
+//*****************************************************************************
+} // end class ObjectCloner

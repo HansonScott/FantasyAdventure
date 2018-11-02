@@ -1,0 +1,1 @@
+The three radio buttons along the top of this screen represent the three main skill categories in which your character may choose to train.  Select a category to read a specific description of each. Within each category, you may or may not have points available to spend on training.  These points depend on the bonuses you generated from your character statistics.

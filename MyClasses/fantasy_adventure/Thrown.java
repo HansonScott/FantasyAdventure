@@ -1,0 +1,328 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+//imports
+
+
+public class Thrown extends Weapon{
+
+//**************************************************
+// static declarations
+  static ItemBasics BASICS_AXE;
+  static ItemBasics BASICS_DAGGER;
+  static ItemBasics BASICS_DART;
+  static ItemBasics BASICS_STONE;
+  static ItemBasics BASICS_KNIFE;
+  static ItemBasics BASICS_JAVELIN;
+
+//**************************************************
+// member declarations
+
+//**************************************************
+// Constructor
+
+  public Thrown(int type){
+    // first, setup general item details
+    super();
+    setType(type);
+    setQuantity(Roll.D(Constants.STACK_SIZE));
+    basics = ItemBasics.getBasicsForType(type);
+    calcThrownStats();
+    updateDetails();
+  } // end constructor
+
+//**************************************************
+// public methods
+//**************************************************
+  void writeToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeToFile(bw);
+
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//**************************************************
+// static methods
+//******************************************************************************
+  static Thrown readFromFile (int type, BufferedReader br) throws IOException{
+
+    Thrown thisItem = new Thrown (type);
+    thisItem.readFromFile(br);
+
+    // now we can read our details onto the line...
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//******************************************************************************
+  public static Item generateRandomAxe() {
+    Thrown thisItem = new Thrown(Item.THROWN_AXE);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.getQualityFromName("Good"));
+    thisItem.calcThrownStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomAxe
+
+//**************************************************
+  public static Item generateRandomDagger() {
+    Thrown thisItem = new Thrown(Item.THROWN_DAGGER);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.getQualityFromName("Good"));
+    thisItem.calcThrownStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generatRandomDagger
+
+//**************************************************
+  public static Item generateRandomDart() {
+    Thrown thisItem = new Thrown(Item.THROWN_DART);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.getQualityFromName("Good"));
+    thisItem.calcThrownStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomDart
+
+//**************************************************
+  public static Item generateRandomStone() {
+    Thrown thisItem = new Thrown(Item.THROWN_STONE);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.getQualityFromName("Good"));
+    thisItem.calcThrownStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomStone
+
+//**************************************************
+  public static Item generateRandomKnife() {
+    Thrown thisItem = new Thrown(Item.THROWN_KNIFE);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.getQualityFromName("Good"));
+    thisItem.calcThrownStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomKnife
+
+//**************************************************
+  public static Item generateRandomJavelin() {
+    Thrown thisItem = new Thrown(Item.THROWN_JAVELIN);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.getQualityFromName("Good"));
+    thisItem.calcThrownStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomJavelin
+
+//**************************************************
+  public static Item generateRandomThrown() {
+    switch(Roll.D6()){
+      case 1:  return generateRandomAxe();
+      case 2:  return generateRandomDagger();
+      case 3:  return generateRandomDart();
+      case 4:  return generateRandomStone();
+      case 5:  return generateRandomKnife();
+      case 6:  return generateRandomJavelin();
+      default: return generateRandomJavelin();
+    } // end switch
+  } // end generateRandomThrown()
+
+//**************************************************
+// private methods
+//**************************************************
+
+  private void calcThrownStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now setup specific details
+    if (getType() == Item.THROWN_AXE){
+      setInventoryIcon(BASICS_AXE.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_AXE.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_AXE.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_AXE.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_AXE.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_AXE.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end axe
+
+    else if (getType() == Item.THROWN_DAGGER){
+      setInventoryIcon(BASICS_DAGGER.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_DAGGER.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_DAGGER.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_DAGGER.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_DAGGER.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_DAGGER.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end dagger
+
+    else if (getType() == Item.THROWN_DART){
+      setInventoryIcon(BASICS_DART.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_DART.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_DART.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_DART.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_DART.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_DART.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end DART
+
+    else if (getType() == Item.THROWN_STONE){
+      setInventoryIcon(BASICS_STONE.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_STONE.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_STONE.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_STONE.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_STONE.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_STONE.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end STONE
+
+    else if (getType() == Item.THROWN_KNIFE){
+      setInventoryIcon(BASICS_KNIFE.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_KNIFE.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_KNIFE.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_KNIFE.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_KNIFE.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_KNIFE.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end KNIFE
+
+    else if (getType() == Item.THROWN_JAVELIN){
+      setInventoryIcon(BASICS_JAVELIN.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_JAVELIN.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_JAVELIN.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_JAVELIN.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_JAVELIN.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_JAVELIN.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end JAVELIN
+    else{}
+
+    updateDmgFormula();
+    basics.setName("" + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+  } // end calcThrownStats
+
+//******************************************************************
+} // end class Thrown

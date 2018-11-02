@@ -1,0 +1,32 @@
+GameObject properites:	Version:	95	X Location:	0	Y Location:	0	Size Width:	0	Size Height:	0	lineOfSight:	true	passable:	100	selectable:	true	hasActivator:	true	cover:	0
+LivingObject properies:	Full Name:	Nox Hill	short Name:	Nox	Gender:	Male	Race:	Half-Orc	Age:	25	Skin Color:	204 204 0	Hair Color:	92 53 14	Major Color:	255 153 0	Minor Color:	153 102 0	BaseHP:	14	TempMaxHP	14	CurrentHP:	14	BaseMP:	2	TempMaxMP	2	CurrentMP:	2
+Alignment:	4	Neutral Good	
+Alignment Points:	LG:	0	LN:	0	LE:	0	NG:	4	TN:	0	NE:	0	CG:	0	CN:	0	CE:	0
+RelationToPC:	0
+Casting Failure:	0
+Large Portrait File:	Images/Portraits/Half-Orc/Male/013L.jpg
+Small Portrait File:	Images/Portraits/Half-Orc/Male/013S.jpg
+Base Strength:	16	Base Dexterity:	14	Base Constitution:	16	Base Intelligence:	9	Base Wisdom:	9	Base Charisma:	12
+Temp Strength:	16	Temp Dexterity:	14	Temp Constitution:	16	Temp Intelligence:	9	Temp Wisdom:	9	Temp Charisma:	12
+Base Strength Bonus:	5	Base Dexterity Bonus:	1	Base Constitution Bonus:	3	Base Intelligence Bonus:	-1	Base Wisdom Bonus:	-1	Base Charisma Bonus:	0
+Temp Strength Bonus:	5	Temp Dexterity Bonus:	1	Temp Constitution Bonus:	3	Temp Intelligence Bonus:	-1	Temp Wisdom Bonus:	-1	Temp Charisma Bonus:	0
+Immunity to Fire:	false	Immunity to Energy:	false	Immunity to Air:	false	Immunity to Life:	false	Immunity to Water:	false	Immunity to Nature:	false	Immunity to Earth:	false	Immunity to Death:	false	Immunity to Crushing:	false	Immunity to Piercing:	false	Immunity to Slashing:	false	Immunity to Melee:	false	Immunity to Ranged:	false
+Fire Resistance:	5	Energy Resistance:	0	Air Resistance:	0	Life Resistance:	0	Water Resistance:	0	Nature Resistance:	0	Earth Resistance:	5	Death Resistance:	0	Crushing Resistance:	0	Piercing Resistance:	0	Slashing Resistance:	0	Melee Resistance:	0	Ranged Resistance:	0
+Fortitude Save:	9	Reflex Save:	5	Social Save:	4	Fire Save:	6	Energy Save:	4	Air Save:	4	Life Save:	4	Water Save:	4	Nature Save:	4	Earth Save:	6	Death Save:	4
+Melee Attack: 	11	Thrown Attack: 	7	Launcher Attack: 	5	Natural Defense: 	5	Equipment Defense: 	0
+baseLevel	30	Axe Class Weapons	1	Blunt Class Weapons	1	Hand to Hand Class Weapons	1	Long Blade Class Weapons	1	Launcher Class Weapons	1	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	1	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	1	Backstab	0	Snipe	0	Pickpocket	0	Locks	0	Traps	0	Spells Fire	0	Spells Energy	0	Spells Air	0	Spells Life	0	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+currentLevel	30	Axe Class Weapons	1	Blunt Class Weapons	1	Hand to Hand Class Weapons	1	Long Blade Class Weapons	1	Launcher Class Weapons	1	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	1	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	1	Backstab	0	Snipe	0	Pickpocket	0	Locks	0	Traps	0	Spells Fire	0	Spells Energy	0	Spells Air	0	Spells Life	0	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+exp	30	Axe Class Weapons	1000	Blunt Class Weapons	1000	Hand to Hand Class Weapons	1000	Long Blade Class Weapons	1000	Launcher Class Weapons	1000	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	1000	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	1000	Backstab	0	Snipe	0	Pickpocket	0	Locks	0	Traps	0	Spells Fire	0	Spells Energy	0	Spells Air	0	Spells Life	0	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+Skills:
+HealthState:	dead:	false	unconscious:	false	stoned:	false	paralyzed:	false	held:	false	stunned:	false	dominated:	false	charmed:	false	Level Drained:	false	poisoned:	false	diseased:	false	vampire:	false	cursed:	false	berzerk:	false	confused:	false	slowed:	false	drunk:	false	tired:	false
+Inventory properties:	Gold:	6	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	
+Number of Memberships:	0
+Fame:	5
+Disposition:	Fear:	25	Courage:	50	Energy:	75	Soberiety:	50	Happiness:	50	Resolve:	75
+Biography:
+PlayerCharacter properties:
+CharDir:	D:\JBuilder2005\Fantasy_Adventure\Save\Nox	current area:	area03x08y00
+Journal path:	D:\JBuilder2005\Fantasy_Adventure\Save\Nox\journal.txt
+QuestList path:	D:\JBuilder2005\Fantasy_Adventure\Save\Nox\quests.txt
+Encounters:	6
+Human	Elf	Dwarf	Gnome	Halfling	Half-Orc	

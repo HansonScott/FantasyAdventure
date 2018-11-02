@@ -1,0 +1,67 @@
+package fantasy_adventure;
+
+import java.awt.*;
+import javax.swing.*;
+
+//************************************************************************
+//imports
+
+//************************************************************************
+public class MyUtils {
+
+  /* The purpose of this class is to offer commonly used methods and
+   * variables that do not fit into a specific class, or are used
+   * in multiple classes, for code refactoring purposes.
+   *
+   */
+
+//************************************************************************
+// static variables
+//************************************************************************
+
+//************************************************************************
+// static methods
+//************************************************************************
+  static JTextArea makeTextBox(int    cols,
+                               int    rows,
+                               Color  font,
+                               Color  background,
+                               String s){
+
+    /* purpose of this method is to refactor all the times
+     * we need to make a simple textBox into one place,
+     * passing the common variables to handle the details.
+     */
+
+    JTextArea textBox = new JTextArea();
+
+    textBox.setColumns(cols);
+    textBox.setRows(rows);
+
+    textBox.setBorder(BorderFactory.createLoweredBevelBorder());
+    textBox.setLineWrap(true);
+    textBox.setWrapStyleWord(true);
+    textBox.setForeground(font);
+    textBox.setDisabledTextColor(font);
+    textBox.setBackground(background);
+    textBox.setEditable(false);
+    textBox.setSelectedTextColor(font);
+    textBox.setSelectionColor(background);
+    textBox.setText(s);
+
+    return textBox;
+
+  } // end makeTextBox
+
+//************************************************************************
+  protected static JLabel makeSpacerLabel(int w,int h) {
+    JLabel label = new JLabel("");
+    label.setPreferredSize(new Dimension(w, h));
+    if (Constants.debugMode)
+      label.setBorder(BorderFactory.createEtchedBorder());
+    return label;
+  }
+
+//************************************************************************
+} // end class <ClassName>
+//************************************************************************

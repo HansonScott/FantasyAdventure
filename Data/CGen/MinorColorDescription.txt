@@ -1,0 +1,1 @@
+This color is used for minor clothing and equipment colors.  Mostly for trim, edges, or highlights.

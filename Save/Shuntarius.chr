@@ -1,0 +1,32 @@
+GameObject properites:	Version:	95	X Location:	0	Y Location:	0	Size Width:	0	Size Height:	0	lineOfSight:	true	passable:	100	selectable:	true	hasActivator:	true	cover:	0
+LivingObject properies:	Full Name:	Shuntarius Schoen	short Name:	Shuntarius	Gender:	Male	Race:	Human	Age:	25	Skin Color:	255 204 153	Hair Color:	102 51 0	Major Color:	187 188 153	Minor Color:	151 123 149	BaseHP:	10	TempMaxHP	10	CurrentHP:	10	BaseMP:	11	TempMaxMP	11	CurrentMP:	11
+Alignment:	0	unknown	
+Alignment Points:	LG:	0	LN:	0	LE:	0	NG:	0	TN:	0	NE:	0	CG:	0	CN:	0	CE:	0
+RelationToPC:	0
+Casting Failure:	0
+Large Portrait File:	Images/Portraits/Human/Male/001L.jpg
+Small Portrait File:	Images/Portraits/Human/Male/001S.jpg
+Base Strength:	12	Base Dexterity:	14	Base Constitution:	15	Base Intelligence:	13	Base Wisdom:	16	Base Charisma:	17
+Temp Strength:	12	Temp Dexterity:	14	Temp Constitution:	15	Temp Intelligence:	13	Temp Wisdom:	16	Temp Charisma:	17
+Base Strength Bonus:	1	Base Dexterity Bonus:	2	Base Constitution Bonus:	2	Base Intelligence Bonus:	1	Base Wisdom Bonus:	3	Base Charisma Bonus:	4
+Temp Strength Bonus:	1	Temp Dexterity Bonus:	2	Temp Constitution Bonus:	2	Temp Intelligence Bonus:	1	Temp Wisdom Bonus:	3	Temp Charisma Bonus:	4
+Immunity to Fire:	false	Immunity to Energy:	false	Immunity to Air:	false	Immunity to Life:	false	Immunity to Water:	false	Immunity to Nature:	false	Immunity to Earth:	false	Immunity to Death:	false	Immunity to Crushing:	false	Immunity to Piercing:	false	Immunity to Slashing:	false	Immunity to Melee:	false	Immunity to Ranged:	false
+Fire Resistance:	0	Energy Resistance:	0	Air Resistance:	0	Life Resistance:	5	Water Resistance:	5	Nature Resistance:	0	Earth Resistance:	5	Death Resistance:	0	Crushing Resistance:	0	Piercing Resistance:	0	Slashing Resistance:	0	Melee Resistance:	0	Ranged Resistance:	0
+Fortitude Save:	6	Reflex Save:	6	Social Save:	10	Fire Save:	4	Energy Save:	4	Air Save:	4	Life Save:	6	Water Save:	6	Nature Save:	4	Earth Save:	6	Death Save:	4
+Melee Attack: 	8	Thrown Attack: 	7	Launcher Attack: 	7	Natural Defense: 	7	Equipment Defense: 	0
+baseLevel	30	Axe Class Weapons	1	Blunt Class Weapons	1	Hand to Hand Class Weapons	0	Long Blade Class Weapons	0	Launcher Class Weapons	0	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	0	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	1	Backstab	1	Snipe	1	Pickpocket	0	Locks	0	Traps	0	Spells Fire	1	Spells Energy	1	Spells Air	1	Spells Life	1	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+currentLevel	30	Axe Class Weapons	1	Blunt Class Weapons	1	Hand to Hand Class Weapons	0	Long Blade Class Weapons	0	Launcher Class Weapons	0	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	0	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	1	Backstab	1	Snipe	1	Pickpocket	0	Locks	0	Traps	0	Spells Fire	1	Spells Energy	1	Spells Air	1	Spells Life	1	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+exp	30	Axe Class Weapons	1000	Blunt Class Weapons	1000	Hand to Hand Class Weapons	0	Long Blade Class Weapons	0	Launcher Class Weapons	0	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	0	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	1000	Backstab	1000	Snipe	1000	Pickpocket	0	Locks	0	Traps	0	Spells Fire	1000	Spells Energy	1000	Spells Air	1000	Spells Life	1000	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+Skills:
+HealthState:	dead:	false	unconscious:	false	stoned:	false	paralyzed:	false	held:	false	stunned:	false	dominated:	false	charmed:	false	Level Drained:	false	poisoned:	false	diseased:	false	vampire:	false	cursed:	false	berzerk:	false	confused:	false	slowed:	false	drunk:	false	tired:	false
+Inventory properties:	Gold:	9	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	
+Number of Memberships:	0
+Fame:	3
+Disposition:	Fear:	25	Courage:	50	Energy:	75	Soberiety:	50	Happiness:	50	Resolve:	75
+Biography:
+PlayerCharacter properties:
+CharDir:	D:\JBuilder2005\Fantasy_Adventure\Save\Shuntarius	current area:	area03x08y00
+Journal path:	D:\JBuilder2005\Fantasy_Adventure\Save\Shuntarius\journal.txt
+QuestList path:	D:\JBuilder2005\Fantasy_Adventure\Save\Shuntarius\quests.txt
+Encounters:	6
+Human	Elf	Dwarf	Gnome	Halfling	Half-Orc	

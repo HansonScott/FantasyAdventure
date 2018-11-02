@@ -1,0 +1,132 @@
+package fantasy_adventure;
+
+import java.awt.*;       // supports basic GUI components
+import javax.swing.*;
+import java.awt.event.*;    // supports swing GUI components
+
+
+public class NavPanel extends JPanelWithBackground implements KeyListener{
+
+/* the purpose of this class is to offer the user buttons that will
+ * show different parts of the session in the centralPanel
+ * of the session.  Each button corresponds to a panel within the
+ * session.centralPanel.cardLayout.
+ */
+
+//**********************************************************************
+// declarations
+//**********************************************************************
+
+JButton   actionPanelButton,
+          areaPanelButton,
+          worldPanelButton,
+          journalPanelButton,
+          invPanelButton,
+          charInfoPanelButton,
+          partyControlPanelButton,
+          sessionOptionsPanelButton,
+          filePanelButton;
+
+Session thisSession;
+
+//**********************************************************************
+// constructor
+//**********************************************************************
+
+public NavPanel(Session s){
+
+//**********************************************************************
+  // create and setup JPanelWithBackground
+
+  super(FileNames.SESSION_TEXTURE,
+        JPanelWithBackground.TILE);
+
+  thisSession = s; // capture parent
+
+  setLayout(new FlowLayout(FlowLayout.CENTER, Constants.NAVPANEL_HGAP,
+                                              Constants.NAVPANEL_VGAP));
+
+  setPreferredSize(new Dimension(Constants.NAVPANEL_WIDTH,
+                                 Constants.NAVPANEL_HEIGHT));
+
+  setBorder(BorderFactory.createRaisedBevelBorder());
+
+//**********************************************************************
+  // initialize main objects (ActionListeners to be added by centralPanel);
+
+  actionPanelButton         = makeNavPanelButton("Action Area", "action" , thisSession);
+  areaPanelButton           = makeNavPanelButton("Area Map"   , "area"   , thisSession);
+  worldPanelButton          = makeNavPanelButton("World Map"  , "world"  , thisSession);
+  journalPanelButton        = makeNavPanelButton("Journal"    , "journal", thisSession);
+  invPanelButton            = makeNavPanelButton("Inventory"  , "inv"    , thisSession);
+  charInfoPanelButton       = makeNavPanelButton("Character"  , "info"   , thisSession);
+  partyControlPanelButton   = makeNavPanelButton("Party"      , "party"  , thisSession);
+  sessionOptionsPanelButton = makeNavPanelButton("Options"    , "options", thisSession);
+  filePanelButton           = makeNavPanelButton("File"       , "file"   , thisSession);
+
+//**********************************************************************
+  // add objects to NavPanel
+
+  add(actionPanelButton);
+  add(areaPanelButton);
+  add(worldPanelButton);
+  add(journalPanelButton);
+  add(invPanelButton);
+  add(charInfoPanelButton);
+  add(partyControlPanelButton);
+  add(sessionOptionsPanelButton);
+  add(filePanelButton);
+
+} // end constructor()
+
+//**********************************************************************
+// public/package methods
+//**********************************************************************
+
+//**********************************************************************
+  public void keyPressed(KeyEvent k){
+    // we need to pass along this key event to the appropriate listener
+    if (thisSession.centralPanel.worldPanel.isShowing()){
+      // then pass this keyPressed event to it.
+      thisSession.centralPanel.worldPanel.keyPressed(k);
+    } // end if worldPanel showing
+  } // end keyPressed
+
+//**********************************************************************
+  public void keyReleased(KeyEvent k){
+      // we need to pass along this key event to the appropriate listener
+      if (thisSession.centralPanel.worldPanel.isShowing()){
+        // then pass this keyPressed event to it.
+        thisSession.centralPanel.worldPanel.keyReleased(k);
+      } // end if worldPanel showing
+  } // end keyReleased
+
+//**********************************************************************
+  public void keyTyped(KeyEvent k){
+      // we need to pass along this key event to the appropriate listener
+      if (thisSession.centralPanel.worldPanel.isShowing()){
+        // then pass this keyPressed event to it.
+        thisSession.centralPanel.worldPanel.keyTyped(k);
+      } // end if worldPanel showing
+  } // end keyTyped
+
+//**********************************************************************
+// private methods
+//**********************************************************************
+
+  private JButton makeNavPanelButton(String title, String actionCommand, Session thisSession){
+    JButton button = new JButton(title);
+    button.setHorizontalAlignment(SwingConstants.CENTER);
+    button.setPreferredSize(new Dimension(Constants.NAVPANEL_BUTTON_WIDTH,
+                                          Constants.NAVPANEL_BUTTON_HEIGHT));
+
+    button.setBorder(BorderFactory.createRaisedBevelBorder());
+    button.setActionCommand(actionCommand);
+    button.addActionListener(thisSession);
+    button.addKeyListener(this);
+
+    return button;
+  } // end makeNavPanelButton
+
+//**********************************************************************
+} // end class NavPanel

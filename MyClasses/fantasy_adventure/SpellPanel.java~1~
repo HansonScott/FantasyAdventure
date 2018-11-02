@@ -1,0 +1,16 @@
+package fantasy_adventure;
+
+// Imports******************************************************************
+import java.awt.*;       // supports basic GUI components
+import java.awt.event.*; // supports listeners
+import javax.swing.*;    // supports swing GUI components
+
+
+public class SpellPanel extends CentralPanel {
+
+ /* Purpose of this class is to show the information relating to all the spheres of magic
+  * both that the character has and can attain.  The specifics for each sphere will be
+  * loaded into its own tab, but this is the general container.
+  */
+
+} // end class

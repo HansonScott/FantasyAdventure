@@ -1,0 +1,465 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.metal.*;
+
+//*********************************************************************
+public class FantasyAdventure extends JFrame implements ActionListener,
+                                                        MouseListener{
+
+/* The purpose of this class is to create a 'controller' for the game.
+ * this object will create the main components of the game, listening for the
+ * close of each part, then clearing the UI, saving any data, then
+ * displaying the next part as appropriate.
+ * This object will remain in existance and control of the game during
+ * the entire program life.  A listener will be added
+ * to each components 'close' button, so it can respond accordingly.
+ */
+
+//*********************************************************************
+// static declarations
+
+   static JFileChooser fc;
+
+//*********************************************************************
+public static void main (String[] args){
+
+  // set the Look and Feel
+  try {
+    UIManager.setLookAndFeel(new MetalLookAndFeel());
+  } // end try
+
+  catch (Exception e) {
+    if (Constants.debugMode == true)
+    Popup.createErrorPopup("Exception while setting the Metal L&F..."
+                          + MyTextIO.newline + "...continuing with default.");
+  } // end catch
+
+/* Possible alternate Look and Feel Option:
+  UIManager.getCrossPlatformLookAndFeelClassName() - Java L&F
+  UIManager.getSystemLookAndFeelClassName() - OS Dependent
+ */
+
+  new FantasyAdventure();
+} // end main()
+
+//*********************************************************************
+// Initialize each object within the game. (Macro objects, that is.)
+
+  private Introduction    myIntro;
+  private MainMenu        myMainMenu;
+  private CGen            myCGen;
+  private String          command;
+  private Session         thisSession;
+          PlayerCharacter playerCharacter;
+
+//*********************************************************************
+// constructor
+//*********************************************************************
+public FantasyAdventure(){
+
+  myIntro = new Introduction();
+  myIntro.getFrameContent().addMouseListener(this);
+  myIntro.show(); // as soon as possible, to avoid long intro loading screen.
+
+  myMainMenu = new MainMenu();
+  myMainMenu.newGameButton.addActionListener(this);
+  myMainMenu.savedGameButton.addActionListener(this);
+  myMainMenu.optionsButton.addActionListener(this);
+  myMainMenu.exitGameButton.addActionListener(this);
+
+  if (fc == null){
+    fc = new JFileChooser(FileNames.SAVE_CHR_PATH);
+    setupFileChooser();
+  } // end if
+
+  // While user is looking at the main menu,
+  // We can save time by create Skill arrays to prepare for the new/saved Character.
+  if (Skill.CBSkills[0] == null){
+    Skill.fillSkillArray(Skill.CBSkills, FileNames.CB_SKILLS);}
+  if (Skill.SSSkills[0] == null){
+    Skill.fillSkillArray(Skill.SSSkills, FileNames.SS_SKILLS);}
+  if (Skill.PESkills[0] == null){
+    Skill.fillSkillArray(Skill.PESkills, FileNames.PE_SKILLS);}
+
+  // load any other static files for game processing.
+//  Res.getImage(FileNames.WORLD_MAP); *NOTE: takes a bit too long for here.
+} // end constructor
+
+//*********************************************************************
+// public methods
+//*********************************************************************
+  public void actionPerformed(ActionEvent e){
+   /* respond to actionEvent based on the content of the command
+    * This actionPerformed handles all actions related to
+    * the leaving and returning to the MainMenu.  This includes:
+    * -> Start, Cancel, and Finish CGen
+    * -> Start, Load, and Exit a Session.
+    * -> Start, Cancel, and Confirm the Game Options screen
+    * -> Exiting MainMenu (quit the game).
+    */
+
+     command = e.getActionCommand();
+
+//*********************************************************************
+    if (command == "Exit Game"){
+      // user has chosen to exit from the MainMenu, essentially ending the program.
+      System.exit(0);
+    } // end response to "MainMenu Exit"
+
+//*********************************************************************
+    else if (command == "Start New Game"){
+      // user has chosen to start a new game, creating a new character
+
+      // since the setup can be a bit lengthy, we should change the cursor to 'wait'
+      // NOTE: as of v71, doesn't seem to change, so comment it out for now.
+//      setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+      myCGen = new CGen();
+      playerCharacter = new PlayerCharacter();
+      myCGen.setCharacter(playerCharacter);
+      myCGen.geneticsScreen.backButton.addActionListener(this);
+      myCGen.finalizeCGenScreen.nextButton.setActionCommand("Finish CGen");
+      myCGen.finalizeCGenScreen.nextButton.addActionListener(this);
+      myCGen.myCardLayout.show(myCGen.getContentPane(), "Genetics");
+      myMainMenu.hide();
+
+      // now that we are done, we can change the cursor back to 'normal'
+//      setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+    } // end response to "Start New Game"
+
+//*********************************************************************
+    else if (command == "Cancel CGen"){
+      // user has chosen to quite the CGen process before it was complete.
+      // start by leaving screen and showing menu, so it looks fast
+      myMainMenu.show();
+
+      // now clean up all the details
+      myCGen.geneticsScreen.dispose();
+      myCGen.statsScreen.dispose();
+      myCGen.alignmentScreen.dispose();
+      myCGen.trainingScreen.dispose();
+      myCGen.finalizeCGenScreen.dispose();
+      myCGen.dispose();  // use trash because they might want to start over
+
+    } // end response to "Cancel CGen"
+
+//*********************************************************************
+    else if (command == "Finish CGen"){
+      // user has chosen to confirm the finished character, starting a new game.
+
+      // get the new character from the CGen process
+      playerCharacter = myCGen.finalizeCGenScreen.getCharacter();
+      saveCharacterToFile();
+
+      // start a new session with the newly created character
+      setupNewSession(playerCharacter);
+
+      // dispose of CGen process, since we're done with it
+      myCGen.finalizeCGenScreen.hide();
+      myCGen.dispose();
+
+    } // end response to "Finish CGen"
+
+//*********************************************************************
+    else if (command == "Load Saved Game"){
+      // user has chosen to load a saved game, and start a new session with it.
+      if (thisSession != null){
+        thisSession.hide();
+        thisSession.dispose();
+      } // end if old session exists
+      playerCharacter = null;
+
+      playerCharacter = loadCharacterFromFile();
+
+      if (playerCharacter == null &&
+          thisSession     != null){
+        // then user has canceled, so return...
+        Popup.createErrorPopup("LoadingCharacterFromFile returned null, aborting.");
+        thisSession.show();
+        return;
+      } // end if null
+
+      if (playerCharacter == null &&
+          thisSession     == null){
+        //then user canceled before loading any session, so just abort.
+        return;
+      } // end if
+
+      setupNewSession(playerCharacter);
+      myMainMenu.hide();
+      System.gc();
+
+    } // end response to "Load Saved Game"
+
+//*********************************************************************
+   else if (command == "Session Exit"){
+     // user has chosen to quit the current session, returning to Main Menu.
+     myMainMenu.show();
+     thisSession.hide();
+     thisSession.dispose();
+     playerCharacter = null;
+     System.gc();
+   } // end response to session Exit
+
+//*********************************************************************
+   else if (command == "Start Game Options"){
+     /* user has chosen to look at and/or change the Game Options
+     myOptionsScreen = new OptionsScreen();  // create new each time, to erase temp changes.
+     myOptionsScreen.show();
+     myMainMenu.hide();
+     */
+     if (Constants.debugMode == false)
+      Popup.createInfoPopup("Setting Game Options will be implemented soon!");
+   } // end response to "Start Game Options"
+
+//*********************************************************************
+   else if (command == "Cancel Game Options"){
+     // user has chosen to quit the game Options screen, returning to Main Menu.
+//     myMainMenu.show();
+//     myOptionsScreen.hide();
+   } // end response to "Cancel Game Options"
+
+//*********************************************************************
+   else if (command == "Confirm Game Options"){
+     // user has chosen to confirm the game Options screen,
+     // saving changes and returning to Main Menu.
+
+     // save settings to file
+
+     // apply changes from Options Screen
+
+     // confirm changes made
+        Popup.createInfoPopup("Options saved and applied.");
+
+     // return to MainMenu
+//     myMainMenu.show();
+//     myOptionsScreen.dispose();
+   } // end response to "Confirm Game Options"
+
+//*********************************************************************
+   else if (command == "Save Session"){
+     // user has chosen to save their session from the session/filePanel
+
+     // as always, this takes a bit, so change cursor to the 'wait' cursor
+     saveCharacterToFile();
+
+     // and when done, change cursor back to default
+
+   } // end if "save session" response
+
+//*********************************************************************
+   else {
+     if (Constants.debugMode == true)
+     Popup.createErrorPopup("Error: the command: " + command + " is uncrecognized");
+   } // end else
+
+ } // end actionPerformed()
+
+//*********************************************************************
+  public void mouseClicked (MouseEvent e){
+    // this captures the mouseClick from the introduction,
+    // since nothing else has a mouseListener
+
+    myMainMenu.show();
+    myIntro.dispose();
+
+   } // end mouseClicked()
+
+//*********************************************************************
+  public void mousePressed (MouseEvent e){}
+  public void mouseEntered (MouseEvent e){}
+  public void mouseExited  (MouseEvent e){}
+  public void mouseReleased(MouseEvent e){}
+
+//********************************************************************
+// private, internal methods
+//********************************************************************
+
+  private void setupNewSession(PlayerCharacter playerCharacter){
+    // the purpose of this method is to gather all the session initializations
+    // into one place, and attach the session buttons.
+
+    thisSession = new Session(playerCharacter); // this overwrites any previous sessions.
+
+    thisSession.centralPanel.filePanel.exitButton.addActionListener(this);
+    thisSession.centralPanel.filePanel.exitButton.setActionCommand("Session Exit");
+
+    thisSession.centralPanel.filePanel.loadButton.addActionListener(this);
+    thisSession.centralPanel.filePanel.loadButton.setActionCommand("Load Saved Game");
+
+    thisSession.centralPanel.filePanel.saveButton.addActionListener(this);
+    thisSession.centralPanel.filePanel.saveButton.setActionCommand("Save Session");
+
+    thisSession.show();
+
+  } // end setupNewSession
+
+//********************************************************************
+  private void setupFileChooser(){
+
+      fc = new JFileChooser(FileNames.SAVE_CHR_PATH);
+
+    // Use a filter to show only .chr files.
+    FileFilter myFilter = new FileFilter(){
+
+      // begin internal class FileFilter - needs accept(), and getDescription()
+      public boolean accept(File f){
+        if (f.isDirectory()) return false;
+        // now we can check the extension
+        if (f.getName().endsWith(".chr")){return true;}
+        else return false;
+      } // end accept
+
+      public String getDescription(){return "Character Files (.chr)";}
+
+    }; // end internal class FileFilter
+
+    fc.setFileFilter(myFilter);
+
+    // Allow user to only select one file at a time
+    fc.setMultiSelectionEnabled(false);
+
+    // Allow user to navigate directories as well as files, if stored character elsewhere
+    // NOTE: if we're not showing directories, then this line doesn't matter.  Commenting out.
+//    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+    // Use an 'accessory' to add the character image file and show the character portrait.
+      // fc.setAccessory(JComponent newAccessory)
+      // Note: newAccessory (future?)(quick character pic preview?, delete character button?, etc.)
+} // end create FileChooser
+
+//**********************************************************************
+  private void saveCharacterToFile(){
+    // the purpose of this method is to save 'playerCharacter' to a file
+
+    int fcCommand = -1;
+    boolean fileOK = false;
+    setupFileChooser();
+    fc.setSelectedFile(new File(playerCharacter.getShortName()+".chr"));
+
+    while (!fileOK){
+      try{
+//        Popup.createInfoPopup("trying to show save character dialog");
+        fcCommand = fc.showDialog(this, "Save Character"); // use at end of CGen
+
+        //test for return value of JFileChooser.APPROVE_OPTION
+        if (fcCommand == JFileChooser.APPROVE_OPTION){
+          File charFile = fc.getSelectedFile();
+
+          // if user did not put the proper extension on the file, then do it for them...
+          charFile = fixCharFileName(charFile);
+
+          // write the character to file.
+          playerCharacter.saveToFile(charFile);
+          Popup.createInfoPopup("Character Saved.");
+          fileOK = true;
+          break; // we're done, so close.
+        } // end if approved
+
+        //test for return value of JFileChooser.CANCEL_OPTION
+        else if (fcCommand == JFileChooser.CANCEL_OPTION){ // then respond by closing...
+          break;
+        } // end if cancel
+
+        //Test for return value of JFileChooser.ERROR_OPTION
+        else if (fcCommand == JFileChooser.ERROR_OPTION){ // then respond with error popup...
+          Popup.createErrorPopup("I'm sorry, but there was an error" + MyTextIO.newline +
+                                 "when attempting to access that file.");
+        } // end if error
+        else {
+          Popup.createWarningPopup("JFileChooser command not recognized: " + fcCommand);
+        } // end else
+      } // end try
+
+      catch (HeadlessException he){
+        Popup.createErrorPopup("HeadlesException from saveCharacterToFile");
+      } // end catch
+    } // end while
+
+  // so, fileOK is true or the user clicked cancel, we can close the box.
+  // NOTE: we are not destroying the box because we want to use this one again.
+//  fc.setVisible(false);
+
+} // end saveCharacterToFile
+
+//*********************************************************************
+  private File fixCharFileName(File fileName){
+    // purpose of this method is to read the string given, and
+    // look at the end of the line, as it must be ".chr"
+    // if not, then we need to add the extension to it.
+
+    if (fileName.getPath().substring((int)(fileName.getPath().length() - 4),
+                                     (int)(fileName.getPath().length())).equals(".chr")){
+      return fileName;
+    } // end if
+
+    else { // the extension does not match.
+      return new File(fileName + ".chr");
+    } // end else
+
+  } // end fixCharFileName
+
+//*********************************************************************
+  private PlayerCharacter loadCharacterFromFile(){
+    // the purpose of this method is to open 'playerCharacter' from a file
+    // for the new session.
+
+    int fcCommand = -1;
+    boolean fileOK = false;
+    setupFileChooser();
+
+    while (!fileOK){
+      try{
+        fcCommand = fc.showDialog(this, "Open Character"); // use at end of CGen
+
+        //test for return value of JFileChooser.APPROVE_OPTION
+        if (fcCommand == JFileChooser.APPROVE_OPTION){
+          Popup.createInfoPopup("Open Character button recognized.");
+          File charFile = fc.getSelectedFile();
+          fileOK = true;
+          Popup.createInfoPopup("Creating PlayerCharacter from file: " + MyTextIO.newline +
+                                charFile.getAbsolutePath());
+          playerCharacter = new PlayerCharacter(charFile);
+          if (playerCharacter == null){
+            Popup.createWarningPopup("after creation, playerCharacter still null!");
+          } // end if null
+        } // end if approved
+
+        //test for return value of JFileChooser.CANCEL_OPTION
+        else if (fcCommand == JFileChooser.CANCEL_OPTION){ // then respond by closing...
+          Popup.createInfoPopup("cancel option recognized.");
+          break;
+        } // end if cancel
+
+        //Test for return value of JFileChooser.ERROR_OPTION
+        else if (fcCommand == JFileChooser.ERROR_OPTION){ // then respond with error popup...
+          Popup.createErrorPopup("I'm sorry, but there was an error" + MyTextIO.newline +
+                                 "when attempting to access that file.");
+          break;
+        } // end if error
+        else{
+          Popup.createWarningPopup("JFileChooser command unrecognized: " + fcCommand);
+          break;
+        } // end else
+      } // end try
+
+      catch (HeadlessException he){
+        Popup.createErrorPopup("HeadlesException from loadCharacterFromFile");
+      } // end catch
+    } // end while
+
+    // so, fileOK is true or the user clicked cancel, we can close the box.
+    fc.setVisible(false);
+
+    return playerCharacter;
+  } // end loadCharacterFromFile()
+
+//********************************************************************
+}  // end class FantasyAdventure

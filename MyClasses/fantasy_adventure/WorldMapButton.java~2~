@@ -1,0 +1,270 @@
+package fantasy_adventure;
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.event.*;
+
+//imports
+
+public class WorldMapButton extends    JPanelWithBackground
+                            implements MouseListener,
+                                       MouseMotionListener,
+                                       KeyListener{
+
+  /* The purpose of this class is to create buttons to be used on
+   * the world map interface
+   */
+
+//************************************************************************
+// static declarations
+//************************************************************************
+
+   static final int MAP_BUTTON_WIDTH  = calcButtonWidth();
+   static final int MAP_BUTTON_HEIGHT = calcButtonHeight();
+
+   static final Image partyIcon = Res.getImage(FileNames.PC_MAP_ICON).getImage();
+   static final int partyIconWidth  = partyIcon.getWidth(null);
+   static final int partyIconHeight = partyIcon.getHeight(null);
+
+   static final int TOKEN_WIDTH  = 20;
+   static final int TOKEN_HEIGHT = 20;
+
+//************************************************************************
+// member declarations
+//************************************************************************
+
+   private boolean mouseOver  = false; // for world panel view, shows highlighting
+   private boolean discovered = false; // if the character has been 'near' it, or learned about
+   private boolean entered    = false; // if the character has actually entered area.
+   private boolean occupied   = false; // if the character is currently in the area.
+
+   WorldPanel parent;
+
+   int buttonNumber;
+   String areaName;
+
+//************************************************************************
+// constructors
+//************************************************************************
+
+  public WorldMapButton (WorldPanel parent, int index){
+    // first call parent.
+    super(null, JPanelWithBackground.TILE);
+
+    this.parent = parent;
+
+    buttonNumber = index;
+
+    // using the buttonNumber, calculate the areaName
+    calculateAreaName();
+
+    // now set specifics - minimal for now, future sets current cover image, etc.
+    setOpaque(false); // lets the map show through
+
+    setPreferredSize(new Dimension(MAP_BUTTON_WIDTH,
+                                   MAP_BUTTON_HEIGHT));
+
+    addMouseListener      (this); // this will handle map stuff
+    addMouseMotionListener(this); // this will handle map stuff
+    addKeyListener        (this); // this will handle map stuff
+    addMouseListener      (this); // this is just to change the button appearance
+
+    resetBorder(); // using the default boolean settings
+
+  } // end constructor
+//************************************************************************
+// public methods
+//************************************************************************
+
+  public void setDiscovered (boolean b) {discovered = b;} // end setDiscovered
+  public void setEntered    (boolean b) {entered    = b;} // end setEntered
+  public void setOccupied   (boolean b) {occupied   = b;} // end setOccupied
+
+  public boolean isDiscovered () {return discovered;} // end setDiscovered
+  public boolean isEntered    () {return entered;}    // end setEntered
+  public boolean isOccupied   () {return occupied;}   // end setOccupied
+
+//************************************************************************
+  public void mouseClicked(MouseEvent e){
+//    Popup.createInfoPopup("MouseClick detected by worldMapButton");
+    if (e.getButton() == MouseEvent.BUTTON3 ||
+        e.isControlDown() ||
+        e.isAltDown()){
+      handleRightClick();
+    } // end if alternative click
+
+    else{
+      parent.mouseClicked(e);
+    } // end else
+  } // end mouseClicked
+
+//************************************************************************
+  public void mouseEntered(MouseEvent e){
+    // user has entered this mapButton (area of the map)...
+    mouseOver = true;
+    resetBorder();
+  } // end mouseEntered
+
+//************************************************************************
+  public void mouseExited(MouseEvent e){
+    // user has exited this mapButton (area of the map)...
+    mouseOver = false;
+    resetBorder();
+  }  // end mouseExited
+
+//************************************************************************
+  public void mousePressed(MouseEvent e){
+    // user has pressed down on this mapButton (area of the map)...
+    if (e.getButton() == MouseEvent.BUTTON1)
+      parent.mousePressed(e);
+  } // end mousePressed
+
+//************************************************************************
+  public void mouseReleased(MouseEvent e){
+    // user has pressed down on this mapButton (area of the map)...
+    if (e.getButton() == MouseEvent.BUTTON1)
+      parent.mouseReleased(e);
+  } // end mouseReleased
+
+//************************************************************************
+  public void mouseMoved(MouseEvent e){
+    // user has moved across this mapButton (area of the map)...
+    parent.mouseMoved(e);
+  } // end mouseReleased
+
+//************************************************************************
+  public void mouseDragged(MouseEvent e){
+    // user has dragged across this mapButton (area of the map)...
+    parent.mouseDragged(e);
+  } // end mouseReleased
+
+//************************************************************************
+  public void keyPressed     (KeyEvent k)   {
+//    Popup.createInfoPopup("Key Pressed caught by World Map Button");
+    parent.keyPressed(k);
+  } // end keyPressed
+
+//************************************************************************
+  public void keyReleased    (KeyEvent k)   {
+    parent.keyReleased(k);
+  } // end keyReleased
+
+//************************************************************************
+  public void keyTyped       (KeyEvent k)   {
+//    Popup.createInfoPopup("Key Typed caught by World Map Button");
+    parent.keyTyped(k);
+} // end keyTyped
+
+//************************************************************************
+  public void paintComponent(Graphics g){
+    super.paintComponent(g);
+    // based on stats, draw any specifics.
+
+    if (isDiscovered() == false) {
+      // we have not discovered this area yet,
+      // so fill background with blank color to cover the map.
+      // in order to know color, we must find out the area that this links to,
+      // and what color should be used.
+
+      // for now however, just fill with gray
+      g.setColor(Color.LIGHT_GRAY);
+      g.fillRect(0,0,this.getWidth(), this.getHeight());
+
+    } // end if undiscovered
+
+    //*************************************
+    else if(isEntered() == false){
+      // we have discovered this area, but we have not entered it yet,
+      // so we need to fill the area with the picture of the map in it's monochrome format.
+      // for now, just leave blank
+
+    } // end if discovered but not entered
+
+    //*************************************
+    else if(isOccupied() == true){
+      // in this case, we have discovered, we have entered, and we are there.
+      // so we need to draw the player token on this button.
+      drawPartyToken(g);
+    } // end else
+
+    else{} // do nothing but show the map.
+  } // end paintComponent
+
+//************************************************************************
+// package methods
+//************************************************************************
+
+//************************************************************************
+// private methods
+//************************************************************************
+  private void handleRightClick(){
+    // purpose of this method is to respond to the user when they
+    // click on a map button with the right button, or with mod keys
+
+    Popup.createInfoPopup("Map Button Details:" + MyTextIO.newline +
+                          "Button index: " + buttonNumber               + MyTextIO.newline +
+                          "Area name: "    + areaName                   + MyTextIO.newline +
+                          "Discovered: "   + String.valueOf(discovered) + MyTextIO.newline +
+                          "Entered: "      + String.valueOf(entered)    + MyTextIO.newline +
+                          "Occupied: "     + String.valueOf(occupied));
+  } // end handle right click
+
+//************************************************************************
+  private void drawPartyToken(Graphics g){
+    // the purpose of this method is to draw the party token onto the passed graphics
+    // this is a symbol or picture that shows over the map.
+    g.drawImage(partyIcon,
+                0,
+                0,
+                this.getWidth(),
+                this.getHeight(),
+                0,
+                0,
+                partyIconWidth,
+                partyIconHeight,
+                this.getBackground(),
+                this);
+  } // end drawPartyToken
+
+//************************************************************************
+  private void resetBorder() {
+    // purpose of this method is to setup the border for the mapButton
+    // based on the stats about the mapButton
+
+    if (mouseOver == true){
+      // we want to show the edges of the button, so create a border.
+      setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(),
+                                                   BorderFactory.createRaisedBevelBorder()));
+    } // end if mouseOver == true
+
+    else if (mouseOver == false){
+      // user is no longer interested in this area, so remove the border
+      setBorder(BorderFactory.createEmptyBorder());
+    } // end if mouseOver == false
+
+  } // end resetBorder
+
+//************************************************************************
+  private void calculateAreaName(){
+    // purpose of this method is to use the buttonNumber to figure out the area
+    // it will be holding
+    int X = (int)(buttonNumber / WorldPanel.NUM_MAP_COLUMNS);
+    int Y = (int)(buttonNumber % WorldPanel.NUM_MAP_COLUMNS);
+    areaName = ("area" + String.valueOf(X) + "x" + String.valueOf(Y) + "y" + "00");
+  } // end calculateAreaName
+
+//************************************************************************
+   static private int calcButtonWidth(){
+     return (int)((Res.getImage(FileNames.WORLD_MAP).getIconWidth())
+                        / WorldPanel.NUM_MAP_COLUMNS);
+   } // en calcButtonWidth
+
+//************************************************************************
+   static private int calcButtonHeight(){
+     return (int)((Res.getImage(FileNames.WORLD_MAP).getIconHeight())
+                        / WorldPanel.NUM_MAP_ROWS);
+   } // end calcButtonHeight
+
+//************************************************************************
+} // end class WorldMapButton

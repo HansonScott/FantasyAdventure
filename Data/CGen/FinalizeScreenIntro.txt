@@ -1,0 +1,1 @@
+This final screen in the character generation process is for the purpose of reviewing the decisions you have made before starting a new game.  If anything needs to be changed, simply click on the back button.  Have fun with your new character!

@@ -1,0 +1,275 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+class SocialObject extends LivingObject{
+
+  /* the aspects of a social object that distinguishes it from other
+   * living objects is the ability to socially interact with other SocialObjects.
+   * With this comes the need for reputation reaction, social/political reaction,
+   * social standing, organizational association, etc.
+   * This is the level at which we add guilds, faction, family ties, etc.
+   */
+
+  // declare objects and variables
+
+  /* adjustable list of memberships to different guilds and factions.
+   * This allows the game to expand guilds, factions, and families as
+   * they are created, founded, and discovered.
+   * calling a method like isMemberOf(String groupName) checks the list
+   * for a membership object that fits the String.
+  */
+
+  private GroupMembership[] memberships;
+  private int               numMemberships;
+
+  /* Fame is an integer value that will continue to grow as the character
+   * accomplishes quests and becomes known throughout the land.
+   * This reputation is neither good nor bad and will not affect
+   * the character's alignment in any way.  The actions performed may,
+   * but the fame rating itself has no bearing on one's alignment.
+   * Fame is more of a 'renown' standing.  Characters can be famous for
+   * their good deads as well as their bad deeds.
+   * Initial fame rating is slightly adjusted if the character is older, or
+   * a rare race, as they would stand out a bit more in society.
+   * NOTE: fame will decrease slowly with time, so if a character ages without doing
+   * anything of notice, their fame will slowly decrease.
+   * Check the fame classFile for fame descriptions.  titles range from 1 - 999.
+   */
+
+   private int fame;
+
+   /* Disposition is a characteristic of a person's psychological state.
+    * This includes various needs and or desires of the personality.
+    * Similar to an Alignment, this has many states that will be kept track of.
+    * read the class description for further details.
+    */
+
+   Disposition disposition;
+
+  //************************************************************************************
+  // constructors
+  //************************************************************************************
+
+  SocialObject (){
+
+  super();  // a SocialObject is still a LivingObject!
+  numMemberships = 0;
+  memberships = new GroupMembership[5];  // start with 5 membership slots, expand by 5 as needed.
+  resetFame();
+  disposition = new Disposition();
+
+  // adjust fame if specific age:
+  if (this.getAge() >= this.getRace().getAvgLifespan() / 4) fame += 1;
+  if (this.getAge() >= this.getRace().getAvgLifespan() / 2) fame += 1;
+  if (this.getAge() >= this.getRace().getAvgLifespan()    ) fame += 1;
+  if (this.getAge() >= this.getRace().getAvgLifespan() * 2) fame += 2;  // so a 150 year-old half-Orc (if living) would have fame = 5.
+
+  } // end constructor()
+
+  //************************************************************************
+  // package methods
+  //************************************************************************
+
+  int getFame() {return fame;} // end GetFame
+
+  void addToFame(){fame += 1;} // end addTofame()
+
+  //************************************************************************
+  void addToFame(int a){
+    for (int i = a; i > 0; i--){addToFame();}
+  }  // end addToFame(int)
+
+  //************************************************************************
+  void takeFromFame(){if (fame > 0) fame -= 1;
+  } // end takefromFame()
+
+  //************************************************************************
+  void takeFromFame(int a){
+    for (int i = a; i > 0; i--){takeFromFame();}
+  } // end takeFromFame(int)
+
+//*************************************************************************
+  void resetFame(){
+    // purpose of this method is to reset the fame of the character
+    // back to its original amount.
+    fame = getRace().getFameAdj();
+  } // end resetFame
+
+  //************************************************************************
+  void startMembership(String groupName){
+
+    // get the number of memberships currently in use,
+    numMemberships += 1;
+
+    if (numMemberships == memberships.length){ // if array is full...
+      expandMembershipArray();
+    } // end if // POST: memberships array HAS room for a new GroupMembership.
+
+    // create and add a new membership with the groupName to newly expanded array
+    memberships[numMemberships - 1] = new GroupMembership(groupName);
+  } // end of startMembership
+
+  //************************************************************************
+  boolean isMemberOf(String groupName){
+    // check to see if the groupName is present in the character's list of memberhsips.
+    for(int i=0; i < memberships.length; i++){
+    // check to see if the desired groupName matches this particular one.
+      if ( groupName == memberships[i].getGroupName()) return true;
+    } // end for loop
+    // POST: gone through whole list of memberships, and have not found desired, so return false.
+    return false;
+  } // end isMemberOf(String)
+
+  //************************************************************************
+  void removeMembership(String groupName){
+    // find location of desiredMembership in array
+    int desiredMembershipLocation;
+    for (desiredMembershipLocation=0;
+         desiredMembershipLocation < memberships.length;
+         desiredMembershipLocation++){
+        if (groupName == memberships[desiredMembershipLocation].getGroupName())break; // end if statement
+      }  // end for loop // POST: desiredMembershipLocation = array location of 'groupName' membership
+
+    // find last membership location
+    int lastMembershipLocation;
+    for (lastMembershipLocation=0;
+         lastMembershipLocation < memberships.length;
+         lastMembershipLocation++){
+      if (memberships[lastMembershipLocation] == null)break; // end if statement
+    } // end for loop // POST: lastMembershipLocation = last item in list.
+
+    // replace desiredMembership with lastMembership to avoid created gaps
+    memberships[desiredMembershipLocation] = memberships[lastMembershipLocation];
+
+    // delete last item.  This might be the same one which would complete the process.
+    memberships[lastMembershipLocation] = null;
+    numMemberships -= 1; // decrease number
+  } // end removeMembership(String)
+
+  //************************************************************************
+  void writeSocialObjectToFile(BufferedWriter bw) throws IOException{
+    // purpose of this method is to write the variables from this class to the BufferedWriter
+    // start by writing lines from parent class:
+    super.writeLivingObjectToFile(bw);
+
+    // now we can write our own variables to the file
+    // start with memberships, title line with numMemberships
+    bw.write ("Number of Memberships:" + MyTextIO.tab + numMemberships);
+    bw.newLine();
+
+    // now, loop through number of memberships and write each one on a line.
+    for (int i = 0; i < numMemberships; i++){
+      memberships[i].writeToFile(bw);  // NOTE: does not add a newline!
+    } // end for
+    if (numMemberships != 0) bw.newLine(); // this way we know all the memberships are on one line, regardless of amount.
+
+    // now, we have all the memberships written, so we can move on to Fame
+    bw.write("Fame:" + MyTextIO.tab + fame);
+    bw.newLine();
+
+    // now, we can write the disposition
+    disposition.writeDispositionToFile(bw);
+
+  } // end writeSocialObjectToFile(bw)
+
+//************************************************************************
+  void readSocialObjectFromFile(BufferedReader br) throws IOException{
+    // purpose of this method is to read from br to fill details of a new
+    // socialObject.
+
+    // start with parent,
+    super.readLivingObjectFromFile(br);
+
+    // now we can fill in these specific details
+    // get memberships
+    String thisLine = br.readLine();
+
+//    Popup.createInfoPopup("reading Social Object from String:" + MyTextIO.newline + thisLine);
+
+    thisLine = MyTextIO.trimPhrase(thisLine); // removes "Memberships:"
+    numMemberships = Integer.parseInt(MyTextIO.getNextWord(thisLine));
+
+    // get fame
+    thisLine = br.readLine();
+    thisLine = MyTextIO.trimPhrase(thisLine); // removes "Fame:"
+    fame = Integer.parseInt(MyTextIO.getNextPhrase(thisLine));
+
+    // get disposition
+    disposition.readDispositionFromFile(br);
+
+  } // end readSocialObjectFromFile()
+
+  int getNumMemberships(){return numMemberships;} // end getNumMemberships
+  GroupMembership[] getMemberships(){return memberships;} // end getGroupMemberships
+
+  //****************************************************************************
+  // private methods
+  //****************************************************************************
+
+  private void expandMembershipArray(){
+    // create a temporary array with same length as current memberships[]
+    GroupMembership[] tempMemberships = new GroupMembership[memberships.length];
+
+    // copy data to temporary array
+
+    for (int i = 0; i < memberships.length; i++){
+      //copy each reference to temp array
+      tempMemberships[i] = memberships[i];
+    } // end for loop
+      // POST: all references in memberships have been transferred to temp array
+
+    // make memberhsips into a new array with 5 more slots
+    memberships = new GroupMembership[tempMemberships.length + 5];
+
+    // copy data back into memberhsips
+    for (int i = 0; i < tempMemberships.length; i++){
+      //copy each reference to temp array
+      memberships[i] = tempMemberships[i];
+    } // end for loop
+  } // end expandMembershipsArray
+
+} // end class SocialObject
+
+//******************************************************************************
+
+class GroupMembership{
+
+// declare objects and variables
+
+private String groupName;
+private String rankName;
+private int    rank;
+
+// constructor
+
+GroupMembership(String group){  // GroupMembership MUST be assigned a name when created!
+  groupName = group;
+  rankName  = "Initiate";
+  rank      = 1;
+} // end constructor
+
+// package methods
+
+void   setRank(String rank){rankName = rank;}  // end setRank(String)
+void   setRank(int r)      {rank = r;}         // end setRank(Int)
+void   setRank(int r, String rank) {setRank(rank); setRank(r);} // end setRank(int, String)
+int    getRank()           {return rank;}      // end getRank()
+String getRankName()       {return rankName;}  // end getRankName()
+String getGroupName()      {return groupName;} // end getName()
+
+void writeToFile(BufferedWriter bw) throws IOException {
+  // each membership takes up 8 cells.
+  bw.write(MyTextIO.tab + "Membership:" +
+           MyTextIO.tab + "groupName:" +
+           MyTextIO.tab + groupName +
+           MyTextIO.tab + "rank:" +
+           MyTextIO.tab + rank +
+           MyTextIO.tab + "rankName:" +
+           MyTextIO.tab + rankName);
+} // end writeToFile
+
+// private methods
+} // end class GroupMembership

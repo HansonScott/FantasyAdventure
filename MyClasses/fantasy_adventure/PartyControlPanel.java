@@ -1,0 +1,55 @@
+package fantasy_adventure;
+
+import java.awt.*;       // supports basic GUI components
+import java.awt.event.*; // supports listeners
+import javax.swing.*;    // supports swing GUI components
+
+public class PartyControlPanel extends JTabbedPane implements ActionListener{
+
+/* purpose of this class is to give the user the ability to change
+   many of the options regarding the character's party.  The Divisions of this are:
+   - Relations
+   - Formations
+ */
+
+//********************************************************************
+// initialize variables and objects
+
+  RelationsTab  relationsTab;
+  FormationsTab formationsTab;
+
+//********************************************************************
+// constructor
+//********************************************************************
+
+  public PartyControlPanel(){
+
+    super();
+
+    setPreferredSize(new Dimension(Constants.CENTRALPANEL_WIDTH,
+                                   Constants.CENTRALPANEL_HEIGHT));
+
+    // first, setup the internal tabbed panes
+    relationsTab  = new RelationsTab();
+    formationsTab = new FormationsTab();
+
+    // add panel to tabbedPane
+    addTab("<html><font size=+1>  Formations </font></html>", formationsTab);
+    addTab("<html><font size=+1>  Relations  </font></html>", relationsTab);
+
+  } // end constructor
+
+//********************************************************************
+// public methods
+//********************************************************************
+
+  public void actionPerformed(ActionEvent e){
+    String command = e.getActionCommand();
+
+  } // end actionPerformed
+
+//********************************************************************
+// private methods
+//********************************************************************
+
+} // end class PartyControlPanel

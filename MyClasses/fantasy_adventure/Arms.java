@@ -1,0 +1,261 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+// imports
+
+public class Arms extends Armor{
+
+//**********************************************************
+// static declarations
+
+  static ItemBasics BASICS_BRACERS;
+  static ItemBasics BASICS_GAUNTLETS;
+  static ItemBasics BASICS_GLOVES;
+
+  static int LAUNCHER_BONUS_BRACERS   = 1;
+  static int LAUNCHER_BONUS_GAUNTLETS = 0;
+  static int LAUNCHER_BONUS_GLOVES    = 0;
+
+  static int MELEE_BONUS_BRACERS    = 0;
+  static int MELEE_BONUS_GAUNTLETS  = 1;
+  static int MELEE_BONUS_GLOVES     = 0;
+
+  static int THROWN_BONUS_BRACERS   = 0;
+  static int THROWN_BONUS_GAUNTLETS = 0;
+  static int THROWN_BONUS_GLOVES    = 1;
+
+//**********************************************************
+// member declarations
+
+  private int meleeBonus;
+  private int thrownBonus;
+  private int launcherBonus;
+
+//**********************************************************
+// constructor
+//**********************************************************
+//  public Arms(){} // end default Constructor
+
+  public Arms (int type) {
+    // first set item generics
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcArmStats();
+    updateDetails();
+  } // end constructor
+
+//**********************************************************
+// public methods
+//**********************************************************
+
+  void setMeleeBonus    (int b) {meleeBonus = b;}    // end setMeleeBonus
+  void setThrownBonus   (int b) {thrownBonus = b;}   // end setThrownBonus
+  void setLauncherBonus (int b) {launcherBonus = b;} // end setLauncherBonus
+
+  int getMeleeBonus    () {return meleeBonus;}    // end getMeleeBonus
+  int getThrownBonus   () {return thrownBonus;}   // end getThrownBonus
+  int getLauncherBonus () {return launcherBonus;} // end getLauncherBonus
+
+//******************************************************************************
+  void writeToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this ammo to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeToFile(bw);
+
+    // now we can write our own details onto the file...
+    bw.write("Arms properites:");
+    bw.write(MyTextIO.tab + "meleeBonus:"     + MyTextIO.tab + getMeleeBonus());
+    bw.write(MyTextIO.tab + "thrownBonus:"    + MyTextIO.tab + getThrownBonus());
+    bw.write(MyTextIO.tab + "launcherBonus:"  + MyTextIO.tab + getLauncherBonus());
+    bw.newLine();
+  } // end writeToFile
+
+//******************************************************************************
+  static Arms readFromFile (int type, BufferedReader br) throws IOException{
+
+    Arms thisItem = new Arms(type);
+    thisItem.readFromFile(br);
+
+    // now we can read our details onto the line...
+    String thisLine = br.readLine();
+
+    thisLine = MyTextIO.trimPhrase(thisLine);         // remove title
+
+    thisLine = MyTextIO.trimPhrase(thisLine);         // remove variable title
+    thisItem.setMeleeBonus(Integer.parseInt(MyTextIO.getNextPhrase(thisLine))); // captures variable
+    thisLine = MyTextIO.trimPhrase(thisLine);         // remove variable title
+
+    thisLine = MyTextIO.trimPhrase(thisLine);         // remove variable title
+    thisItem.setThrownBonus(Integer.parseInt(MyTextIO.getNextPhrase(thisLine))); // captures variable
+    thisLine = MyTextIO.trimPhrase(thisLine);         // remove variable title
+
+    thisLine = MyTextIO.trimPhrase(thisLine);         // remove variable title
+    thisItem.setLauncherBonus(Integer.parseInt(MyTextIO.getNextPhrase(thisLine))); // captures variable
+    thisLine = MyTextIO.trimPhrase(thisLine);         // remove variable title
+
+    thisItem.updateDetails();
+
+    return thisItem;
+  } // end readFromFile
+
+//**********************************************************
+// static methods
+//**********************************************************
+  public static Item generateRandomBracers() {
+    Arms thisItem = new Arms(Item.ARMS_BRACERS);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcArmStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // generateRandomBracers
+
+//**********************************************************
+  public static Item generateRandomGauntlets() {
+    Arms thisItem = new Arms(Item.ARMS_GAUNTLETS);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcArmStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomGauntlets
+
+//**********************************************************
+  public static Item generateRandomGloves() {
+    Arms thisItem = new Arms(Item.ARMS_GLOVES);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcArmStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomGloves
+
+//**********************************************************
+  public static Item generateRandomArms() {
+    switch(Roll.D3()){
+      case 1:  return generateRandomBracers();
+      case 2:  return generateRandomGauntlets();
+      case 3:  return generateRandomGloves();
+      default: return generateRandomBracers();
+    } // end switch
+  } // end generateRandomGloves
+
+//**********************************************************
+// private methods
+//**********************************************************
+  private void calcArmStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now set specifics based on type
+if      (getType() == Item.ARMS_BRACERS){
+  setInventoryIcon(BASICS_BRACERS.getImageName());
+  setMeleeBonus(MELEE_BONUS_BRACERS);
+  setThrownBonus(THROWN_BONUS_BRACERS);
+  setLauncherBonus(LAUNCHER_BONUS_BRACERS);
+
+  basics.setValue(
+    Formulas.calcItemStat(BASICS_BRACERS.getValue(),
+                          getMaterial().getValueFactor(),
+                          getQuality().getValueFactor()));
+
+  basics.setCastingFailure(
+    Formulas.calcItemStat(BASICS_BRACERS.getCastingFailure(),
+                          getMaterial().getCastFailFactor(),
+                          getQuality().getCastFailFactor()));
+
+  basics.setChanceToBreak(
+    Formulas.calcItemStat(BASICS_BRACERS.getChanceToBreak(),
+                          getMaterial().getBreakFactor(),
+                          getQuality().getBreakFactor()));
+
+  basics.setWeight(
+    Formulas.calcItemStat(BASICS_BRACERS.getWeight(),
+                          getMaterial().getWeightFactor(),
+                          getQuality().getWeightFactor()));
+
+  basics.setEquipmentDefense(
+    Formulas.calcItemStat(BASICS_BRACERS.getEquipmentDefense(),
+                          getMaterial().getDefenseFactor(),
+                          getQuality().getDefenseFactor()));
+
+} // end bracers
+
+else if (getType() == Item.ARMS_GAUNTLETS){
+  setInventoryIcon(BASICS_GAUNTLETS.getImageName());
+  setMeleeBonus(MELEE_BONUS_GAUNTLETS);
+  setThrownBonus(THROWN_BONUS_GAUNTLETS);
+  setLauncherBonus(LAUNCHER_BONUS_GAUNTLETS);
+
+  basics.setValue(
+    Formulas.calcItemStat(BASICS_GAUNTLETS.getValue(),
+                          getMaterial().getValueFactor(),
+                          getQuality().getValueFactor()));
+
+  basics.setCastingFailure(
+    Formulas.calcItemStat(BASICS_GAUNTLETS.getCastingFailure(),
+                          getMaterial().getCastFailFactor(),
+                          getQuality().getCastFailFactor()));
+
+  basics.setChanceToBreak(
+    Formulas.calcItemStat(BASICS_GAUNTLETS.getChanceToBreak(),
+                          getMaterial().getBreakFactor(),
+                          getQuality().getBreakFactor()));
+
+  basics.setWeight(
+    Formulas.calcItemStat(BASICS_GAUNTLETS.getWeight(),
+                          getMaterial().getWeightFactor(),
+                          getQuality().getWeightFactor()));
+
+  basics.setEquipmentDefense(
+    Formulas.calcItemStat(BASICS_GAUNTLETS.getEquipmentDefense(),
+                          getMaterial().getDefenseFactor(),
+                          getQuality().getDefenseFactor()));
+
+} // end gauntlets
+
+else if (getType() == Item.ARMS_GLOVES){
+  setInventoryIcon(BASICS_GLOVES.getImageName());
+  setMeleeBonus(MELEE_BONUS_GLOVES);
+  setThrownBonus(THROWN_BONUS_GLOVES);
+  setLauncherBonus(LAUNCHER_BONUS_GLOVES);
+
+  basics.setValue(
+    Formulas.calcItemStat(BASICS_GLOVES.getValue(),
+                          getMaterial().getValueFactor(),
+                          getQuality().getValueFactor()));
+
+  basics.setCastingFailure(
+    Formulas.calcItemStat(BASICS_GLOVES.getCastingFailure(),
+                          getMaterial().getCastFailFactor(),
+                          getQuality().getCastFailFactor()));
+
+  basics.setChanceToBreak(
+    Formulas.calcItemStat(BASICS_GLOVES.getChanceToBreak(),
+                          getMaterial().getBreakFactor(),
+                          getQuality().getBreakFactor()));
+
+  basics.setWeight(
+    Formulas.calcItemStat(BASICS_GLOVES.getWeight(),
+                          getMaterial().getWeightFactor(),
+                          getQuality().getWeightFactor()));
+
+  basics.setEquipmentDefense(
+    Formulas.calcItemStat(BASICS_GLOVES.getEquipmentDefense(),
+                          getMaterial().getDefenseFactor(),
+                          getQuality().getDefenseFactor()));
+
+} // end gloves
+
+else {}
+
+basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+  } // end calcArmStats
+
+//**********************************************************
+} // end class

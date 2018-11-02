@@ -1,0 +1,32 @@
+GameObject properites:	Version:	95	X Location:	0	Y Location:	0	Size Width:	0	Size Height:	0	lineOfSight:	true	passable:	100	selectable:	true	hasActivator:	true	cover:	0
+LivingObject properies:	Full Name:	Jarden Avery	short Name:	Jarden	Gender:	Male	Race:	Human	Age:	25	Skin Color:	255 204 153	Hair Color:	102 51 0	Major Color:	25 216 135	Minor Color:	198 141 62	BaseHP:	8	TempMaxHP	8	CurrentHP:	8	BaseMP:	8	TempMaxMP	8	CurrentMP:	8
+Alignment:	5	True Neutral	
+Alignment Points:	LG:	0	LN:	0	LE:	0	NG:	0	TN:	4	NE:	0	CG:	0	CN:	0	CE:	0
+RelationToPC:	0
+Casting Failure:	0
+Large Portrait File:	Images/Portraits/Human/Male/001L.jpg
+Small Portrait File:	Images/Portraits/Human/Male/001S.jpg
+Base Strength:	13	Base Dexterity:	12	Base Constitution:	12	Base Intelligence:	11	Base Wisdom:	15	Base Charisma:	6
+Temp Strength:	13	Temp Dexterity:	12	Temp Constitution:	12	Temp Intelligence:	11	Temp Wisdom:	15	Temp Charisma:	6
+Base Strength Bonus:	1	Base Dexterity Bonus:	1	Base Constitution Bonus:	1	Base Intelligence Bonus:	0	Base Wisdom Bonus:	2	Base Charisma Bonus:	-1
+Temp Strength Bonus:	1	Temp Dexterity Bonus:	1	Temp Constitution Bonus:	1	Temp Intelligence Bonus:	0	Temp Wisdom Bonus:	2	Temp Charisma Bonus:	-1
+Immunity to Fire:	false	Immunity to Energy:	false	Immunity to Air:	false	Immunity to Life:	false	Immunity to Water:	false	Immunity to Nature:	false	Immunity to Earth:	false	Immunity to Death:	false	Immunity to Crushing:	false	Immunity to Piercing:	false	Immunity to Slashing:	false	Immunity to Melee:	false	Immunity to Ranged:	false
+Fire Resistance:	0	Energy Resistance:	0	Air Resistance:	0	Life Resistance:	5	Water Resistance:	5	Nature Resistance:	0	Earth Resistance:	5	Death Resistance:	0	Crushing Resistance:	0	Piercing Resistance:	0	Slashing Resistance:	0	Melee Resistance:	0	Ranged Resistance:	0
+Fortitude Save:	5	Reflex Save:	5	Social Save:	5	Fire Save:	4	Energy Save:	4	Air Save:	4	Life Save:	6	Water Save:	6	Nature Save:	4	Earth Save:	6	Death Save:	4
+Melee Attack: 	7	Thrown Attack: 	6	Launcher Attack: 	6	Natural Defense: 	6	Equipment Defense: 	0
+baseLevel	30	Axe Class Weapons	1	Blunt Class Weapons	1	Hand to Hand Class Weapons	0	Long Blade Class Weapons	0	Launcher Class Weapons	0	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	1	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	0	Backstab	0	Snipe	0	Pickpocket	0	Locks	0	Traps	0	Spells Fire	1	Spells Energy	0	Spells Air	0	Spells Life	0	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+currentLevel	30	Axe Class Weapons	1	Blunt Class Weapons	1	Hand to Hand Class Weapons	0	Long Blade Class Weapons	0	Launcher Class Weapons	0	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	1	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	0	Backstab	0	Snipe	0	Pickpocket	0	Locks	0	Traps	0	Spells Fire	1	Spells Energy	0	Spells Air	0	Spells Life	0	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+exp	30	Axe Class Weapons	1000	Blunt Class Weapons	1000	Hand to Hand Class Weapons	0	Long Blade Class Weapons	0	Launcher Class Weapons	0	Polearm Class Weapons	0	Short Blade Class Weapons	0	Spiked Class Weapons	1000	Thrown Class Weapons	0	Unarmored Proficiency	0	Light Armor Proficiency	0	Medium Armor Proficiency	0	Heavy Armor Proficiency	0	Shield Proficiency	0	Stealth	0	Backstab	0	Snipe	0	Pickpocket	0	Locks	0	Traps	0	Spells Fire	1000	Spells Energy	0	Spells Air	0	Spells Life	0	Spells Water	0	Spells Nature	0	Spells Earth	0	Spells Death	0
+Skills:
+HealthState:	dead:	false	unconscious:	false	stoned:	false	paralyzed:	false	held:	false	stunned:	false	dominated:	false	charmed:	false	Level Drained:	false	poisoned:	false	diseased:	false	vampire:	false	cursed:	false	berzerk:	false	confused:	false	slowed:	false	drunk:	false	tired:	false
+Inventory properties:	Gold:	27	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	false	
+Number of Memberships:	0
+Fame:	3
+Disposition:	Fear:	25	Courage:	50	Energy:	75	Soberiety:	50	Happiness:	50	Resolve:	75
+Biography:
+PlayerCharacter properties:
+CharDir:	D:\JBuilder2005\Fantasy_Adventure\Save\Jarden	current area:	area03x08y00
+Journal path:	D:\JBuilder2005\Fantasy_Adventure\Save\Jarden\journal.txt
+QuestList path:	D:\JBuilder2005\Fantasy_Adventure\Save\Jarden\quests.txt
+Encounters:	6
+Human	Elf	Dwarf	Gnome	Halfling	Half-Orc	

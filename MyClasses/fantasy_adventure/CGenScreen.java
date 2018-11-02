@@ -1,0 +1,247 @@
+package fantasy_adventure;
+
+import java.awt.*;       // supports basic GUI components
+import java.awt.event.*; // supports listeners
+import javax.swing.*;
+import java.io.File;    // supports swing GUI components
+
+//************************************************************************
+public abstract class CGenScreen extends JFrame implements ActionListener{
+
+//************************************************************************
+// instance variables and objects
+//************************************************************************
+   String title;
+   static int screenCount = 0;
+   static final int TOTAL_CGEN_SCREENS = 5;// number of screens in CGen
+   String screenName;
+   String nextScreenName;
+   String lastScreenName;
+
+   PlayerCharacter playerCharacter;  // a holding slot, should get filled.
+
+   boolean visited = false;  // used to check for repeat viewing and required resetting
+   boolean finished = false; // used to check before exit button can be pressed.
+
+// non-visual, or background objects
+   int topInset;
+   int bottomInset;
+   int leftInset;
+   int rightInset;
+
+  // macro objects within the statsScreen JPanel
+  JTextArea topTextArea;
+  JPanel    centralPanel;
+  JPanel    bottomButtonPanel;
+
+  // internal objects within topTextArea
+  public String introMessage;
+
+  // internal objects within bottomButtonPanel
+  JButton backButton;
+  JLabel  errorLabel;
+  JButton nextButton;
+
+//************************************************************************
+// constructor
+//************************************************************************
+public CGenScreen(){
+
+  // create basic JPanel, with borderLayout
+  super();
+  setUndecorated(true);
+  setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+  // figure out the name of the screen based on how many have been created.
+  screenCount += 1;  // this is the next screen
+
+  if ((screenCount % TOTAL_CGEN_SCREENS) == 1){
+    lastScreenName = "Main Menu";
+    screenName     = "Genetics";
+    nextScreenName = "Statistics";
+    } // end 1
+  else if ((screenCount % TOTAL_CGEN_SCREENS) == 2){
+    lastScreenName = "Genetics";
+    screenName     = "Statistics";
+    nextScreenName = "Alignment";
+    } // end 2
+  else if ((screenCount % TOTAL_CGEN_SCREENS) == 3){
+    lastScreenName = "Statistics";
+    screenName     = "Alignment";
+    nextScreenName = "Training";
+    } // end 3
+  else if ((screenCount % TOTAL_CGEN_SCREENS) == 4){
+    lastScreenName = "Alignment";
+    screenName     = "Training";
+    nextScreenName = "Finalize CGen";
+    } // end 4
+
+  else if ((screenCount % TOTAL_CGEN_SCREENS) == 0){
+    lastScreenName = "Training";
+    screenName     = "Finalize CGen";
+    nextScreenName = "Save and Start";
+    } // end 4
+
+  else screenName = "Other";
+
+  title = "Fantasy Adventure - Character Generation - Step " + (screenCount % TOTAL_CGEN_SCREENS) + ": " + screenName + ".";
+  setTitle(title);
+  Container content = getContentPane();
+  content.setLayout(new BorderLayout());
+  setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+  setResizable(false);
+
+  // initialize content for statsScreen JFrame
+
+  // create and setup first macro area
+  introMessage = "<overwrite String 'introMessage' to place correct message here.>";
+
+  topTextArea = new JTextArea(6, 60);
+  topTextArea.setLineWrap(true);  // sets word wrap, not character wrap.
+  topTextArea.setWrapStyleWord(true);
+  topTextArea.setDisabledTextColor(Color.white);
+  topTextArea.setForeground(Color.white);
+  topTextArea.setBackground(Color.black);
+  topTextArea.setBorder(BorderFactory.createMatteBorder(2,10,2,5,Color.black));
+  topTextArea.setEditable(false);
+  topTextArea.setSelectedTextColor(Color.white);
+  topTextArea.setSelectionColor(Color.black);
+  topTextArea.setText(introMessage);
+
+
+  // create and setup centralPanel
+  centralPanel = new JPanel(); // this will contain both the genetics and portrait panels
+
+  topInset    = (int)(Constants.SCREEN_HEIGHT - 600) / 2;
+  bottomInset = (int)(Constants.SCREEN_HEIGHT - 600) / 2;
+  leftInset   = (int)(Constants.SCREEN_WIDTH - 800) / 2;
+  rightInset  = (int)(Constants.SCREEN_WIDTH - 800) / 2;
+
+  // set the external border according to screenSize - helps centralize internal components
+  setBorder();
+
+  //***********************************************************
+  // internal objects within centralPanel will be unique.
+  //***********************************************************
+
+  // create buttonPanel
+  bottomButtonPanel = new JPanel();
+  bottomButtonPanel.setLayout(new BorderLayout());
+
+  // internal objects within buttonPanel
+  backButton = new JButton("Back: " + lastScreenName);
+  errorLabel = new JLabel(" ");
+  nextButton = new JButton("Next: " + nextScreenName);
+
+  // add components to buttonPanel
+  bottomButtonPanel.add(backButton, BorderLayout.WEST);
+  bottomButtonPanel.add(errorLabel, BorderLayout.CENTER);
+  bottomButtonPanel.add(nextButton, BorderLayout.EAST);
+
+  // add macro components to CGenScreen
+  content.add(topTextArea, BorderLayout.NORTH);
+  content.add(centralPanel, BorderLayout.CENTER);
+  content.add(bottomButtonPanel, BorderLayout.SOUTH);
+
+} // end constructor
+
+//************************************************************************
+// public methods
+//************************************************************************
+public void actionPerformed(ActionEvent e){
+  String command = e.getActionCommand();
+
+  // possible actions from INTERNAL buttons. (CGen takes care of 'Next' and 'Back' buttons)
+
+  if (command == "item1"){
+    if (Constants.debugMode == true)
+    setErrorLabel("command: " + command + " recognized!", Color.black);
+  } // end "item1" response
+
+  else if (command == "item2"){
+    if (Constants.debugMode == true)
+    setErrorLabel("command: " + command + " recognized!", Color.black);
+  } // end "item2" response
+
+  else if (command == "item3"){
+    if (Constants.debugMode == true)
+    setErrorLabel("command: " + command + " recognized!", Color.black);
+  } // end "item3" response
+
+  else { // if command is unknown.
+    if (Constants.debugMode == true)
+    setErrorLabel("error: command: " + command + " is unknown.", Color.red);
+  }  // end error response
+
+} // end actionPerformed
+
+//************************************************************************
+
+/* The purpose of this method is to pass the character-in-progress to this
+ * particular screen, so it can display all the new data before showing itself.
+ * This method MUST be overwritten for each screen so each screen will update in
+ * its own unique way.
+ */
+abstract void clearInfo();
+
+//************************************************************************
+void setErrorLabel(String error, Color c){
+  errorLabel.setForeground(c);
+  errorLabel.setText(error);
+} // end setErrorLabel
+
+//************************************************************************
+void tell(String message){
+  JFrame popup = new JFrame();
+  JLabel messageLabel = new JLabel(message);
+  popup.setLocation(300,350);
+  popup.setSize(25, 200);
+  popup.getContentPane().add(messageLabel);
+    popup.show();
+} // end tell()
+
+//************************************************************************
+void setIntroMessage(String message){
+  topTextArea.setText(message);
+} // end setIntroMessage()
+
+//************************************************************************
+void setBorder() {
+  centralPanel.setBorder(BorderFactory.createMatteBorder(topInset,
+      leftInset,
+      bottomInset,
+      rightInset,
+      new ImageIcon(getRandomBorder())));
+} // end setBorder
+
+//************************************************************************
+void setCharacter(PlayerCharacter PC){
+  playerCharacter = PC;
+} // end setCharacter
+
+//************************************************************************
+PlayerCharacter getCharacter(){return playerCharacter;}
+
+//************************************************************************
+// private methods
+//************************************************************************
+private String getRandomBorder(){
+  File f = new File(Constants.INSTALL_DIRECTORY + "/Images/Background");
+  String[] s = f.list();
+  int picNumber = Roll.D(s.length) - 1;
+
+  // check that the result is in fact a picture (gif or jpeg)
+//  Popup.createInfoPopup("Loading background for CGen with pic file:" + MyTextIO.newline +
+//                        "images/Background/" + s[picNumber]);
+  if ((new String("images/Background/" + s[picNumber]).endsWith(".gif")) ||
+      (new String("images/Background/" + s[picNumber]).endsWith(".jpg"))){
+    return new String("images/Background/" + s[picNumber]);
+  } // end if
+  else {
+    // if not, then call recursively
+    return getRandomBorder();
+  } // end else
+} // end getRandomBorder
+
+//************************************************************************
+} // end CGenScreen class

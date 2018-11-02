@@ -1,0 +1,283 @@
+package fantasy_adventure;
+
+import java.io.*;
+
+//imports
+
+
+public class Blunt extends Weapon{
+
+//**************************************************
+// static declarations
+  static ItemBasics BASICS_CLUB;
+  static ItemBasics BASICS_HAMMER;
+  static ItemBasics BASICS_MACE;
+  static ItemBasics BASICS_STAFF;
+  static ItemBasics BASICS_MAUL;
+
+//**************************************************
+// member declarations
+
+//**************************************************
+// Constructor
+
+  public Blunt(int type){
+    // first, setup general item details
+    super();
+    setType(type);
+    basics = ItemBasics.getBasicsForType(type);
+    calcBluntStats();
+    updateDetails();
+  } // end constructor
+
+//******************************************************************************
+// public methods
+//******************************************************************************
+  void writeToFile(BufferedWriter bw) throws IOException {
+    // the purpose of this method is to write this item to a one-line string,
+    // using tab delimiters to separate values and varables.
+    super.writeToFile(bw);
+
+    // now we can write our own details onto the file...
+
+  } // end writeToFile
+
+//******************************************************************************
+  static Blunt readFromFile (int type, BufferedReader br) throws IOException{
+
+    Blunt thisItem = new Blunt(type);
+    thisItem.readFromFile(br);
+
+    // now we can read our details onto the line...
+
+    thisItem.updateDetails();
+
+    return thisItem;
+
+  } // end readFromFile
+
+//**************************************************
+// static methods
+//**************************************************
+  public static Item generateRandomClub() {
+    Blunt thisItem = new Blunt(Item.BLUNT_CLUB);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBluntStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomClub
+
+//**************************************************
+  public static Item generateRandomHammer() {
+    Blunt thisItem = new Blunt(Item.BLUNT_HAMMER);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBluntStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generatRandomHammer
+
+//**************************************************
+  public static Item generateRandomMace() {
+    Blunt thisItem = new Blunt(Item.BLUNT_MACE);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBluntStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomMace
+
+//**************************************************
+  public static Item generateRandomStaff() {
+    Blunt thisItem = new Blunt(Item.BLUNT_STAFF);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBluntStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomStaff
+
+//**************************************************
+  public static Item generateRandomMaul() {
+    Blunt thisItem = new Blunt(Item.BLUNT_MAUL);
+    thisItem.setMaterial(Material.generateRandomMaterial());
+    thisItem.setQuality(Quality.generateRandomQuality());
+    thisItem.calcBluntStats();
+    thisItem.updateDetails();
+    return thisItem;
+  } // end generateRandomMaul
+
+//**************************************************
+  public static Item generateRandomBlunt() {
+    switch(Roll.D5()){
+      case 1:  return generateRandomClub();
+      case 2:  return generateRandomHammer();
+      case 3:  return generateRandomMace();
+      case 4:  return generateRandomStaff();
+      case 5:  return generateRandomMaul();
+      default: return generateRandomMace();
+    } // end switch
+  } // end generateRandomBlune()
+
+//**************************************************
+  private void calcBluntStats(){
+    // purpose of this method is to use the material and quality
+    // to create the detailed stats of this item.
+
+    if (getMaterial() == null || getQuality() == null) return;
+
+    // now setup specific details
+    if (getType() == Item.BLUNT_CLUB){
+      setInventoryIcon(BASICS_CLUB.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_CLUB.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_CLUB.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_CLUB.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_CLUB.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_CLUB.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end club
+
+    else if (getType() == Item.BLUNT_HAMMER){
+      setInventoryIcon(BASICS_HAMMER.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_HAMMER.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_HAMMER.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_HAMMER.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_HAMMER.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_HAMMER.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end hammer
+
+    else if (getType() == Item.BLUNT_MACE){
+      setInventoryIcon(BASICS_MACE.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_MACE.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_MACE.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_MACE.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_MACE.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_MACE.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end mace
+
+    else if (getType() == Item.BLUNT_STAFF){
+      setInventoryIcon(BASICS_STAFF.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_STAFF.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_STAFF.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_STAFF.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_STAFF.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_STAFF.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end staff
+
+    else if (getType() == Item.BLUNT_MAUL){
+      setInventoryIcon(BASICS_MAUL.getImageName());
+      basics.setValue(
+        Formulas.calcItemStat(BASICS_MAUL.getValue(),
+                              getMaterial().getValueFactor(),
+                              getQuality().getValueFactor()));
+
+      basics.setCastingFailure(
+        Formulas.calcItemStat(BASICS_MAUL.getCastingFailure(),
+                              getMaterial().getCastFailFactor(),
+                              getQuality().getCastFailFactor()));
+
+      basics.setChanceToBreak(
+        Formulas.calcItemStat(BASICS_MAUL.getChanceToBreak(),
+                              getMaterial().getBreakFactor(),
+                              getQuality().getBreakFactor()));
+
+      basics.setWeight(
+        Formulas.calcItemStat(BASICS_MAUL.getWeight(),
+                              getMaterial().getWeightFactor(),
+                              getQuality().getWeightFactor()));
+
+      basics.setDmgDieSides(
+        Formulas.calcItemStat(BASICS_MAUL.getDmgDieSides(),
+                              getMaterial().getDamageFactor(),
+                              getQuality().getDamageFactor()));
+
+    } // end maul
+
+    else{}
+
+    updateDmgFormula();
+    basics.setName(""+ getQuality().getName() + " " + getMaterial().getName() + " " + Item.getTypeName(getType()));
+
+  } // end calcBluntStats
+
+} // end class Blunt
